@@ -5,7 +5,7 @@
 }
 .content{
     margin: 50px;
-    height: 500px;
+    height: 550px;
     width: 600px;
     background-color: #D9D9D9;
     border-radius: 20px;
@@ -22,6 +22,7 @@
 }
 .input{
     padding: 10px 20px;
+    width: 400px;
     margin: 10px 20px;
     border: none;
     border-radius: 10px;
@@ -31,14 +32,22 @@
     border: none;
     background-color: #f29b9b;
     color: white;
-    width: 80px;
+    width: 150px;
     height: 40px;
     border-radius: 5px;
-    margin: 50px;
+    margin-left: 20px;
   }
 
 .contentBody{
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;    
+    flex-direction: column;
+    align-items: center;
+}
+.error{
+    padding: 5px;
+    background-color: lightcoral;
+    color: white;
+    border-radius: 10px;
+    margin: 0px 20px;
+    width: 400px;
 }

@@ -1,15 +1,14 @@
 import styles from "./header.module.css";
 
 import { ImStackoverflow } from "react-icons/im";
+import { ReactComponent as IconMenu } from '../../assets/headicon.svg';
 
 const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.headerIcon}>
-        <ImStackoverflow size={40} />
-        <p className={styles.headerText}>
-        StackOverFlow Lite
-        </p>
+        <IconMenu className={styles.icon}/>
+        
       </div>
     </div>
   );

@@ -6,7 +6,7 @@
 }
 .loginbody {
   width: 500px;
-  height: 400px;
+  height: 450px;
   background-color: #d9d9d9;
   border-radius: 41px;
   margin: 70px;
@@ -53,4 +53,24 @@
   font-weight: lighter;
   margin-left: 50px;
   margin-top: 0px;
+}
+.error {
+  padding: 5px;
+  background-color: lightcoral;
+  color: white;
+  border-radius: 10px;
+  margin: 0px 50px;
+}
+.success {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2px 15px;
+  margin: 0px 50px;
+  background-color: lightgreen;
+  color: white;
+  border-radius: 10px;
+}
+.successicon {
+  color: green;
 }
