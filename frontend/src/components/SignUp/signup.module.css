@@ -1,0 +1,44 @@
+.body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.content{
+    margin: 50px;
+    height: 500px;
+    width: 600px;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+}
+.registerHeader{
+    text-align: center;
+    font-size: large;
+}
+.label{
+    font-weight: lighter;
+    margin-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.input{
+    padding: 10px 20px;
+    margin: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    color: black;
+}
+.registerbtn {
+    border: none;
+    background-color: #f29b9b;
+    color: white;
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    margin: 50px;
+  }
+
+.contentBody{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;    
+}
