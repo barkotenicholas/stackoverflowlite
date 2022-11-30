@@ -7,6 +7,8 @@
     margin: 50px;
     height: 550px;
     width: 600px;
+    display: flex;
+    flex-direction: column;
     background-color: #D9D9D9;
     border-radius: 20px;
 }
@@ -50,4 +52,20 @@
     border-radius: 10px;
     margin: 0px 20px;
     width: 400px;
+}
+
+/* Media queries */
+
+@media screen and (min-width :480px) {
+    .content{
+        width: 400px;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+    }
+    .input{
+        width: 250px;
+    }
+   
 }

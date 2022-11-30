@@ -1,8 +1,18 @@
-import React from "react";
+import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import styles from "./ask.module.css";
 
-const AskQuestion = ({ setIsOpen }) => {
+const AskQuestion = ({ setIsOpen, handleSubmit }) => {
+  const [question, setQuestion] = useState("");
+
+  const isDisabled = question.length === 0;
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    handleSubmit(question);
+    setQuestion("");
+    setIsOpen(false);
+  };
   return (
     <>
       <div className={styles.darkBG} onClick={() => setIsOpen(false)} />
@@ -17,21 +27,28 @@ const AskQuestion = ({ setIsOpen }) => {
             </button>
           </div>
           <div className={styles.modalContent}>
-          <textarea className={styles.textbox} rows = "5" cols = "60" name = "description">
-            Ask Question ?
-         </textarea>
+            <form onSubmit={onSubmit}>
+              <textarea
+                className={styles.textbox}
+                rows="5"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                cols="60"
+                name="description"
+                placeholder="Ask a question?"
+              ></textarea>
+              <div className={styles.actionsContainer}>
+                <button
+                  className={styles.cancelBtn}
+                  disabled={isDisabled}
+                >
+                  Ask Question
+                </button>
+              </div>
+            </form>
           </div>
 
-          <div className={styles.modalActions}>
-            <div className={styles.actionsContainer}>
-              <button
-                className={styles.cancelBtn}
-                onClick={() => setIsOpen(false)}
-              >
-                Ask Question
-              </button>
-            </div>
-          </div>
+          <div className={styles.modalActions}></div>
         </div>
       </div>
     </>

@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "./comment.module.css";
 
-import {
-  getComments as getCommentsApi,
-  createComment as createCommentApi,
-  updateComment as updateCommentApi,
-  deleteComment as deleteCommentApi,
-} from "../../api";
+import { getComments as getCommentsApi } from "../../api";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 const Comments = () => {
   const [backendComment, setBackendComment] = useState([]);
   const addComment = (text, pid) => {
-    console.log('Add comment');
+    console.log("Add comment");
   };
   useEffect(() => {
     getCommentsApi().then((data) => {
@@ -22,13 +17,12 @@ const Comments = () => {
 
   return (
     <div>
-            <div className={styles.commentBody}>
-      {backendComment.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
-      ))}
-      <CommentForm onSubmit={addComment} submitLabel='Add Comment' />
-    </div>
-
+      <div className={styles.commentBody}>
+        {backendComment.map((comment) => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
+        <CommentForm onSubmit={addComment} submitLabel="Add Comment" />
+      </div>
     </div>
   );
 };

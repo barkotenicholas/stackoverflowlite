@@ -1,6 +1,6 @@
 .home{
-    margin: 30px;
-    padding: 50px;
+    margin: 0px 30px;
+    padding: 10px 50px;
     height: 100vh;
 }
 .searchBox{
@@ -57,8 +57,9 @@
     font-size: large;
 }
 .headerText{
-    font-size: 36px;
+    font-size: 25px;
     font-weight: lighter;
+    margin: 0px;
 }
 .link{
     text-decoration: none;
