@@ -5,10 +5,6 @@
 }
 .content{
     margin: 50px;
-    height: 550px;
-    width: 600px;
-    display: flex;
-    flex-direction: column;
     background-color: #D9D9D9;
     border-radius: 20px;
 }
@@ -51,15 +47,18 @@
     color: white;
     border-radius: 10px;
     margin: 0px 20px;
-    width: 400px;
+    width: 200px;
 }
-
+.danger{
+    background-color: lightcoral;
+}
+.success{
+    background-color: greenyellow;
+}
 /* Media queries */
 
 @media screen and (min-width :480px) {
     .content{
-        width: 400px;
-        height: 600px;
         display: flex;
         flex-direction: column;
         align-content: space-between;

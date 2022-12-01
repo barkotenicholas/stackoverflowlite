@@ -1,0 +1,12 @@
+###
+POST  http://localhost:5100/question
+Content-Type: application/json
+
+{
+    "id":"ey3vdgd725",
+    "user_id":"17f732d4-ef68-4e79-aa43-16e69fc060e1",
+    "question":"How to you reverse an array ?",
+    "date":"2020-2-15"
+}
+###
+GET  http://localhost:5100/question

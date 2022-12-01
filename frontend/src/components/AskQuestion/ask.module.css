@@ -133,3 +133,14 @@
   border-radius: 20px;
   padding: 20px;
 }
+/* media queries */
+
+@media screen and (max-width:480px) {
+
+  .modal{
+    width: 400px;
+  }
+  .textbox{
+    width: 300px;
+  }
+}

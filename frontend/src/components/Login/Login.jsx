@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/slices/auth.slice";
+import { clearMessage } from "../../redux/slices/message.slice";
 
 export const Login = () => {
+  let navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
   const initialValues = {
     email: "",
     password: "",
@@ -28,11 +40,17 @@ export const Login = () => {
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
   const handleLogin = (e) => {
+    
     e.preventDefault();
     if (validate()) {
-      setEmailError({ ...emailError, success: "Success" });
-      setPasswordError({ ...passwordError, success: "Success" });
-
+      setEmailError({error:"", success: "Success" });
+      setPasswordError({ error:"", success: "Success" });
+      dispatch(login(formValues))
+        .unwrap()
+        .then(() => {
+          navigate("/home");
+        })
+        .catch(() => {});
     }
   };
 
@@ -54,7 +72,10 @@ export const Login = () => {
     }
 
     if (!PWD_REGEX.test(formValues.password)) {
-      setPasswordError({ ...passwordError, error: "Password format is invalid" });
+      setPasswordError({
+        ...passwordError,
+        error: "Password format is invalid",
+      });
       return false;
     }
     return true;
@@ -63,6 +84,7 @@ export const Login = () => {
     <>
       <div className={styles.body}>
         <div className={styles.loginbody}>
+          {message && <p className={styles.message}>{message}</p>}
           <p className={styles.loginHead}>Welcome Back...</p>
           <p className={styles.loginTitle}>
             Please Enter your email and password
@@ -74,16 +96,16 @@ export const Login = () => {
             onChange={handleChange}
             placeholder="Enter email?"
           ></input>
-            {emailError.error && (
-              <>
-                <p className={styles.error}>{emailError.error}</p>
-              </>
-            )}
-            {emailError.success && (
-              <>
-                <span className={styles.success}>{emailError.success} <BsCheckCircleFill/></span>
-              </>
-            )}
+          {emailError.error && (
+            <>
+              <p className={styles.error}>{emailError.error}</p>
+            </>
+          )}
+          {emailError.success && (
+            <span className={styles.success}>
+              {emailError.success} <BsCheckCircleFill />
+            </span>
+          )}
           <input
             className={styles.password}
             value={formValues.password}
@@ -98,12 +120,14 @@ export const Login = () => {
           )}
           {passwordError.success && (
             <>
-              <span className={styles.success}>{passwordError.success} <BsCheckCircleFill/></span>
+              <span className={styles.success}>
+                {passwordError.success} <BsCheckCircleFill />
+              </span>
             </>
           )}
           <p className={styles.terms}>
-            By login in you agree to out terms and conditions
-            Do not have an account<Link to={'/register'}>Click to register</Link>
+            By login in you agree to out terms and conditions Do not have an
+            account<Link to={"/register"}>Click to register</Link>
           </p>
           <button className={styles.loginbtn} onClick={handleLogin}>
             LOGIN

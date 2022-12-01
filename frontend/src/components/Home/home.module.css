@@ -64,3 +64,43 @@
 .link{
     text-decoration: none;
 }
+/* Media queries */
+
+@media screen and (max-width: 480px) {
+    .home{
+        margin: 0px 10px;
+        padding: 10px 5px;
+        height: 100vh;
+    }
+    .searchInput{
+        height: 15px;
+    }
+    .search{
+        height: 20px;
+    }
+    .searchBox{
+        height: 20px;
+        padding: 5px;
+    }
+    .topbar{
+        margin-top: 15px;
+    }
+    .headerText{
+        font-size: 12px;
+    }
+    .askbtn{
+        padding: 2px 5px;
+        font-size: small;
+    }
+    .breakline{
+        margin: 5px 0px;
+        
+    }
+    .link{
+        text-decoration: none;
+    }
+    .questions{
+        margin: 0px;
+        padding: 5px 10px;
+    }
+}

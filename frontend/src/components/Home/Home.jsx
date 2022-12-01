@@ -3,20 +3,25 @@ import styles from "./home.module.css";
 import { GoSearch } from "react-icons/go";
 import AskQuestion from "../AskQuestion/AskQuestion";
 import { Link } from "react-router-dom";
-import { getQuestions } from "../../api";
+import { useDispatch, useSelector } from "react-redux";
+import { getQuestions } from "../../redux/slices/question.slice";
+
 const Home = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   
+  const questionsAsked = useSelector((state)=>state.questions.questions)
+
+  console.log(questionsAsked);
+
   const handleSubmit = (question) => {
     console.log(question);
   };
 
   useEffect(() => {
-    getQuestions().then((data) => {
-      setQuestions(data);
-    });
-  },[]);
+    dispatch(getQuestions("question"))
+  },[dispatch]);
 
   return (
     <>
@@ -35,8 +40,8 @@ const Home = () => {
 
         <div className={styles.breakline}></div>
 
-        {questions ? (
-          questions.map((question, index) => (
+        {questionsAsked ? (
+          questionsAsked.map((question, index) => (
             <Link to={"/answers"} className={styles.link} key={index}>
               <div className={styles.questions}>
                 <p className={styles.question}>{question.question}</p>
