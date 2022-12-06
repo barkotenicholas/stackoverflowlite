@@ -3,34 +3,38 @@
     flex-direction: column;
     align-content: flex-end;
     align-items: flex-end;
-    margin:20px 80px;
+    background-color: #b3aaaa;
+    margin:5px 80px;
 }
 .comment{
-    width: 974px;
-    height: 30px;
-    border-radius: 30px;
+    width: auto;
+    height: auto;
+    border-radius: 3px;
     background-color: #D9D9D9;
     padding: 5px 20px;
-    margin: 10px 70px;
+    margin: 5px;
 }
 .anwerCenter{
     align-self: flex-start;
 }
 .commentinput{
-    padding: 15px 20px;
-    margin: 20px 50px;
+    padding: 5px;
+    margin:2px 20px;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 .commentsubmit{
-    margin-top: 10px;
+    margin: 10px 10px;
     cursor: pointer;
     font-weight: 500;
     padding: 11px 28px;
     border-radius: 12px;
     font-size: 0.8rem;
-    border: 1px solid black;
-    color: #2c3e50;
-    background: #fcfcfc;
+    color: white;
+    border: none;
+    background: #c9c0c0;
     transition: all 0.25s ease;
+}
+.author{
+    color: blue;
 }

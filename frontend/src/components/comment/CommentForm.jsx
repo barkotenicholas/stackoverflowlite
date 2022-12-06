@@ -11,7 +11,7 @@ const CommentForm = ({ onSubmitAnswer }) => {
   };
   return (
     <form onSubmit={onSubmit}>
-      <input className={styles.commentinput} value={comment} onChange={(e) => setComment(e.target.value)} />
+      <input className={styles.commentinput} placeholder='Comment here' value={comment} onChange={(e) => setComment(e.target.value)} />
       <button className={styles.commentsubmit} disabled={isSubmitDisabled}>Add Comment</button>
     </form>
   );

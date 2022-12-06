@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
+import axios from 'axios';
 import { InsertAnswers, GetAnswers } from '../models/answers.model.js'
 dotenv.config()
 export const AddAnswer = async (req, res) => {
@@ -28,13 +29,27 @@ export const GetAllAnswers = async (req, res) => {
 
     try {
 
-        const question_id = req.params.id;
-
-
+        const question_id = req.params.id;  
         const result = await GetAnswers(question_id)
-        if (result) {
-            return res.status(200).json(result)
+        async function procesMultipleCandidates(data) {
+            let generatedResponse = []
+            for (let elem of data) {
+                try {
+                    const { id, user_id, question_id, answer, upvote, downvote } = elem;
+                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`)
+                    const { firstname, lastname } = user.data
+
+                    generatedResponse.push({ id, firstname, lastname, answer, question_id, upvote, downvote })
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }
+            console.log('complete all') // gets loged first
+            return generatedResponse // return without waiting for process of 
         }
+
+        const fullList = await procesMultipleCandidates(result)
+        if (fullList) return res.status(200).json(fullList)
 
 
     } catch (error) {

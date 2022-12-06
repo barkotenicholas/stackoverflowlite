@@ -77,7 +77,7 @@ const Home = () => {
             <Link to={`/answers/${question.id},${question.user_id}`} className={styles.link} key={index}>
               <div className={styles.questions}>
                 <p className={styles.question}>{question.question}</p>
-                <p className={styles.author}>Asked by {question.author}</p>
+                <p className={styles.author}>Asked by {question.firstname}</p>
               </div>
             </Link>
           ))

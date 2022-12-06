@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import styles from "./answers.module.css";
 import Comments from "../comment/Comments";
-import { BiUpArrow, BiDownArrow } from "react-icons/bi";
+import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
 import AnswerForm from "../answers/AnswerForm";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ const Answers = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   let [color, setColor] = useState("#ffffff");
-  
+
   if (!currentUser) navigate("/");
 
   const { id } = useParams();
@@ -58,21 +58,28 @@ const Answers = () => {
   const addAnswers = (answer) => {
     console.log(answer);
     const postAnswer = {
-      questionid:id ,
+      questionid: id,
       uid: currentUser.id,
       answer: answer,
       upvote: 0,
       downvote: 0,
     };
     console.log(postAnswer);
-    dispatch(addAnswer(postAnswer))
+    dispatch(addAnswer(postAnswer));
   };
   return (
     <div className={styles.body}>
       <h2 className={styles.questionHead}>
         {info ? <p>{info.question}</p> : <p>Questiion not availale</p>}
       </h2>
-      {info ? <p>Author {info.firstname}</p> : <p>Author not availale</p>}
+      {info ? (
+        <>
+          <p className={styles.firstname}>Author ~ {info.firstname} </p>
+          <span className={styles.date}>{info.date}</span>
+        </>
+      ) : (
+        <p>Author not availale</p>
+      )}
       <div className={styles.breakline}></div>
       {loading && (
         <ClipLoader
@@ -88,16 +95,15 @@ const Answers = () => {
         <>
           {answers.answers.map((a, index) => (
             <div key={a.id}>
-              <p>{a.answer}</p>
               <div className={styles.answer}>
                 <div className={styles.arrow}>
-                  <BiUpArrow className={styles.up} />
-                  <BiDownArrow className={styles.up} />
+                  <MdArrowDropUp size={70} className={styles.up} />
+                  <MdArrowDropDown size={70} className={styles.up} />
                 </div>
 
                 <div>
                   <p className={styles.answertitle}>{a.answer}</p>
-                  <p className={styles.author}>Answered by </p>
+                  <p className={styles.author}>Answered by ~{a.firstname}</p>
                 </div>
                 <div>
                   <div className={styles.vote}>

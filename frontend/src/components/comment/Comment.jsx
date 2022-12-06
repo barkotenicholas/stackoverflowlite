@@ -1,9 +1,12 @@
 import styles from "./comment.module.css";
 
-const Comment = ({comment}) => {
+const Comment = ({ comment }) => {
   return (
-    <div className={styles.comment}>{comment.comment}</div>
-  )
-}
+    <div  className={styles.comment}>
+      <div>{comment.comment}  <span className={styles.author} >~ {comment.firstname}</span></div>
+    </div>
+  );
+};
 
-export default Comment
+export default Comment;
+ 

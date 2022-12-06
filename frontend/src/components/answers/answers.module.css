@@ -1,7 +1,7 @@
 .questionHead {
   font-weight: 100;
   font-size: 40px;
-  line-height: 75px;
+  line-height: 5px;
   margin: 0px 80px;
 }
 .breakline {
@@ -10,14 +10,15 @@
 }
 .answer {
   width: 1088px;
-  height: 175px;
+  height: auto;
   background-color: #d9d9d9;
-  border-radius: 30px;
+  border-radius: 8px;
   margin: 20px 80px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  padding: 30px;
 }
 .arrow {
   margin: 20px;
@@ -28,6 +29,7 @@
 }
 .up {
   color: white;
+  font-size: 150px;
 }
 .answertitle {
   color: #5a3939;
@@ -52,7 +54,7 @@
 }
 .answerForm {
   width: auto;
-  position: relative  ;
+  position: relative;
   align-self: center;
   bottom: 0;
 }
@@ -88,9 +90,86 @@
   transition: all 0.25s ease;
 }
 
-.votes{
+.votes {
   background-color: white;
   padding: 5px;
   border-radius: 105px;
- 
+}
+.firstname {
+  align-self: flex-end;
+  color: blue;
+  margin: 0px;
+}
+
+.date {
+  margin: 0px;
+  align-self: flex-end;
+  color: gray;
+}
+
+@media screen and (max-width: 480px) {
+  .questionHead {
+    font-size: 20px;
+    line-height: 1px;
+    margin: 0px 30px;
+  }
+  .answer {
+    width: 350px;
+    height: auto;
+    padding: 10px;
+    margin: 0px;
+    margin-top: 30px;
+  }
+  .arrow {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 25px;
+  }
+  .answertitle {
+    color: #5a3939;
+    font-size: 10px;
+    font-weight: 400;
+  }
+  .author {
+    padding: 0px;
+    margin: 0pxs;
+    color: #7c5959;
+    font-size: 10px;
+  }
+  .vote {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 150px;
+  }
+
+  .votes {
+    background-color: white;
+    padding: 0px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 10px;
+  }
+  .cmtbtn {
+    background-color: white;
+    border: none;
+    padding: 1px;
+    border-radius: 5px;
+    color: #7c5959;
+  }
+  .answerForm {
+    width: 350px;
+    position: absolute;
+    align-self: center;
+    bottom: 0;
+  }
+  .textbox {
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+    width: auto;
+    border: 1px solid #7c5959;
+  }
 }
