@@ -22,3 +22,12 @@ export const Login = async (email) => {
 
     return response.recordset[0]
 }
+
+export const GetUser = async (id)=>{
+    const pool = await poolPromise
+    const response = await pool.request()
+        .input('id', id)
+        .execute('spSelectUserId')
+
+    return response.recordset[0]
+}

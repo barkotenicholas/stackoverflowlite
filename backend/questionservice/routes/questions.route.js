@@ -1,17 +1,22 @@
 import { Router } from "express";
-import { AddQuestion,DeleteQuesion,GetAllQuestion } from "../controllers/questions.controller.js";
+import { AddQuestion,DeleteQuesion,GetAllQuestion ,getSingleQuestion} from "../controllers/questions.controller.js";
 
 /* Configure Route */
 const router = Router()
 
-/*Login Route */
+/*Post question Route */
 router.post('/', AddQuestion);
 
-/*Sign up Route */
+/*Get all questions Route */
 router.get('/', GetAllQuestion);
+
+/*Get Single question */
+router.get('/:id',getSingleQuestion)
 
 /*Verify Token route */
 router.delete('/', DeleteQuesion);
+
+/*Add answers */
 
 
 export default router

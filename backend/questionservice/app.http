@@ -10,3 +10,37 @@ Content-Type: application/json
 }
 ###
 GET  http://localhost:5100/question
+
+
+###
+GET  http://localhost:5100/question/3c41e5eb-8586-4136-b96d-2e396a70a023
+
+###
+POST  http://localhost:5100/answers
+Content-Type: application/json
+
+{
+    "questionid":"3c41e5eb-8586-4136-b96d-2e396a70a023",
+    "uid":"11fb2695-955d-435b-90ce-58551bd438ad",
+    "answer":"You can use the array reversereverese method",
+    "upvote":0,
+    "downvote":0
+}
+
+###
+GET  http://localhost:5100/answers
+Content-Type: application/json
+
+
+###
+POST http://localhost:5100/comment
+Content-Type: application/json
+
+{
+    "answer_id":"e6f1f5e9-5086-4316-9922-a857df1c6b6f",
+    "user_id":"11fb2695-955d-435b-90ce-58551bd438ad",
+    "comment":"This solution does not work"
+}   
+
+###
+GET  http://localhost:5100/comment/e6f1f5e9-5086-4316-9922-a857df1c6b6f

@@ -11,6 +11,11 @@ export const Login = async(login)=>{
         return response.data
     })
 }
+
+export const getAuthor = async(userid)=>{
+    let respone = await axios.get(`${API_URL}/${userid}`)
+    return respone
+}
 export const Register = async   (User)=>{
     return axios.post(API_URL+'/signup',User)
 }

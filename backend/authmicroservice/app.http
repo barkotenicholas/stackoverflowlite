@@ -2,7 +2,7 @@
 POST http://localhost:5050/auth/signup
 Content-Type: application/json
 
-{
+{   
     "firstname":"Evans",
     "lastname":"Otieno",
     "email":"evans@gmail.com",
@@ -16,3 +16,5 @@ Content-Type: application/json
     "email":"barkotenicholas@gmail.com",
     "password":"Barpello@320"
 }
+###
+GET http://localhost:5050/auth/11fb2695-955d-435b-90ce-58551bd438ad

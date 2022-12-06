@@ -110,6 +110,7 @@ export const Login = () => {
             className={styles.password}
             value={formValues.password}
             onChange={handleChange}
+            type="password"
             name="password"
             placeholder="Enter password?"
           ></input>

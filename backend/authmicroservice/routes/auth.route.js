@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup, verify } from "../controllers/auth.controller.js";
+import { login, signup, verify ,getUser } from "../controllers/auth.controller.js";
 
 /* Configure Route */
 const router = Router()
@@ -9,6 +9,9 @@ router.post('/login', login);
 
 /*Sign up Route */
 router.post('/signup', signup);
+
+/*Get User */
+router.get('/:id',getUser)
 
 /*Verify Token route */
 router.get('/verify', verify);

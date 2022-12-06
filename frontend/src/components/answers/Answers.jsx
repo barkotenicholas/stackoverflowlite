@@ -1,69 +1,137 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import styles from "./answers.module.css";
 import Comments from "../comment/Comments";
 import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 import AnswerForm from "../answers/AnswerForm";
-import { getAnswers } from "../../api";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  fetchAnswers,
+  getSingleQuestion,
+  addAnswer,
+} from "../../redux/slices/answers.slice";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
+
 const Answers = () => {
-  const [open, setOpen] = useState();
-  const [anwersUsers, setAnwerUsers] = useState([]);
+  const { user: currentUser } = useSelector((state) => state.auth);
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  let [color, setColor] = useState("#ffffff");
+  
+  if (!currentUser) navigate("/");
+
+  const { id } = useParams();
+  const { userid } = useParams();
+  console.log(userid);
   useEffect(() => {
-    getAnswers().then((data) => {
-      setAnwerUsers(data);
-      let arr = new Array(data.length).fill(false);
-      setOpen(arr);
-    });
+    dispatch(getSingleQuestion(id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAnswers(id));
   }, []);
 
-  const addAnswer = (answer, uid) => {};
+  const [display, setDisplay] = useState(-1);
+
+  const toggleElement = (currentIndex) => {
+    // Check if the element that is clicked is already open
+    if (currentIndex === display) {
+      setDisplay(-1); // If it is already open, close it.
+    } else {
+      setDisplay(currentIndex); // else open the clicked element
+    }
+  };
+
+  const answers = useSelector((state) => state.answer);
+  const info = useSelector((state) => state.answer.questionAsked);
+  const loading = useSelector((state) => state.answer.loading);
+
+  const addAnswers = (answer) => {
+    console.log(answer);
+    const postAnswer = {
+      questionid:id ,
+      uid: currentUser.id,
+      answer: answer,
+      upvote: 0,
+      downvote: 0,
+    };
+    console.log(postAnswer);
+    dispatch(addAnswer(postAnswer))
+  };
   return (
     <div className={styles.body}>
-      <h2 className={styles.questionHead}>How do you reverse an array ?</h2>
+      <h2 className={styles.questionHead}>
+        {info ? <p>{info.question}</p> : <p>Questiion not availale</p>}
+      </h2>
+      {info ? <p>Author {info.firstname}</p> : <p>Author not availale</p>}
       <div className={styles.breakline}></div>
+      {loading && (
+        <ClipLoader
+          color={color}
+          loading={loading}
+          cssOverride={override}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      )}
+      {answers.answers.length > 0 ? (
+        <>
+          {answers.answers.map((a, index) => (
+            <div key={a.id}>
+              <p>{a.answer}</p>
+              <div className={styles.answer}>
+                <div className={styles.arrow}>
+                  <BiUpArrow className={styles.up} />
+                  <BiDownArrow className={styles.up} />
+                </div>
 
-      {anwersUsers ? (
-        anwersUsers.map((answer, index) => (
-          <>
-            <div className={styles.answer}>
-              <div className={styles.arrow}>
-                <BiUpArrow className={styles.up} />
-                <BiDownArrow className={styles.up} />
-              </div>
-
-              <div>
-                <p className={styles.answertitle}>{answer.answer}</p>
-                <p className={styles.author}>Answered by {answer.author}</p>
-              </div>
-              <div>
-                <div className={styles.vote}>
-                  <p>Up Votes {answer.upvote}</p>
-                  <p>Down Votes{answer.downvote}</p>
+                <div>
+                  <p className={styles.answertitle}>{a.answer}</p>
+                  <p className={styles.author}>Answered by </p>
                 </div>
                 <div>
-                  <button
-                    className={styles.cmtbtn}
-                    onClick={() => {
-                      let newArr = [...open]
-                      newArr[index] = !newArr[index]
-                      setOpen(newArr)
-                    }}
-                  >
-                    Comment
-                  </button>
+                  <div className={styles.vote}>
+                    <p className={styles.votes}>Up Votes {a.upvote}</p>
+                    <p className={styles.votes}>Down Votes{a.downvote}</p>
+                  </div>
+                  <div>
+                    <button
+                      className={styles.cmtbtn}
+                      onClick={() => {
+                        toggleElement(index);
+                      }}
+                    >
+                      Comment
+                    </button>
+                  </div>
                 </div>
               </div>
+              {display === index ? (
+                <>
+                  <Comments answer_id={a.id} />
+                </>
+              ) : (
+                <></>
+              )}
             </div>
-            {open[index] && <Comments />}
-          </>
-        ))
+          ))}
+        </>
       ) : (
         <p>No answers provided</p>
       )}
 
       <div className={styles.answerForm}>
-        <AnswerForm handleSubmit={addAnswer} />
+        <AnswerForm handleSubmit={addAnswers} />
       </div>
     </div>
   );

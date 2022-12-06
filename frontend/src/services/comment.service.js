@@ -1,0 +1,12 @@
+import axios from "axios";
+
+const API_URL = "http://localhost:5100/comment";
+
+export const GetComment = async (id) => {
+    let respone = await axios.get(`${API_URL}/${id}`);
+    return respone
+}
+export const PostComment = async (comment) => {
+    return axios.post(API_URL, comment)
+}
+

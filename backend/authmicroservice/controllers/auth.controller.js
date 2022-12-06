@@ -1,4 +1,4 @@
-import { Login, AddUser } from '../model/User.model.js';
+import { Login, AddUser, GetUser } from '../model/User.model.js';
 import { v4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -67,5 +67,25 @@ export const login = async (req, res) => {
 
 }
 export const verify = async (req, res) => {
+
+}
+export const getUser = async (req, res) => {
+    try {
+
+        const  id  = req.params.id;
+        console.log(id);
+        const result = await GetUser(id);
+        if (!result) return res.status(403).json({ message: `user not found` });
+        const {  firstname, lastname ,email } = result;
+       
+        return res.status(200).json({
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+        })
+
+    } catch (error) {
+        return res.status(403).json({ message: error.message })
+    }
 
 }

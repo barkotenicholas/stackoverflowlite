@@ -29,7 +29,7 @@
     padding: 11px 28px;
     border-radius: 12px;
     font-size: 0.8rem;
-    border: none;
+    border: 1px solid black;
     color: #2c3e50;
     background: #fcfcfc;
     transition: all 0.25s ease;

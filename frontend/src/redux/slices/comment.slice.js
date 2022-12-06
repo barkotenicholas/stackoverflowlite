@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetQuestions ,AskQuestion } from "../../services/questions.service.js";
+import { GetComment,PostComment } from "../../services/comment.service.js";
 import { setMessage } from "./message.slice.js";
 
 
-export const getQuestions = createAsyncThunk(
-    'questions/getQuestions',
-    async (question, thunkAPI) => {
+export const getComments = createAsyncThunk(
+    'comment/getCOmment',
+    async (question_id, thunkAPI) => {
 
         try {
-            const response = await GetQuestions();
+            const response = await GetComment(question_id);
             thunkAPI.dispatch(setMessage(response.data.message));
             return response.data;
         } catch (error) {
@@ -25,14 +25,14 @@ export const getQuestions = createAsyncThunk(
     }
 )
 
-export const askQuestion = createAsyncThunk(
-    'questions/askquestions',
+export const postComment = createAsyncThunk(
+    'comment/postComment',
     async (question, thunkAPI) => {
 
         try {
-            const response = await AskQuestion(question);
+            const response = await PostComment(question);
             thunkAPI.dispatch(setMessage(response.data.message));
-            thunkAPI.dispatch(getQuestions("asd"))
+            thunkAPI.dispatch(getComments(question.answer_id));
             return response.data;
         } catch (error) {
             const message =
@@ -50,7 +50,7 @@ export const askQuestion = createAsyncThunk(
 
 
 const initialState = {
-    questions:[],
+    comments:[],
     loading:false,
     error:''
 }
@@ -59,14 +59,14 @@ const questionSlice = createSlice({
     name: "question",
     initialState,
     extraReducers:(builder)=>{
-        builder.addCase(getQuestions.pending,(state,action)=>{
+        builder.addCase(getComments.pending,(state,action)=>{
             state.loading=true
         })
-        builder.addCase(getQuestions.fulfilled,(state,action)=>{
-            state.questions = action.payload
+        builder.addCase(getComments.fulfilled,(state,action)=>{
+            state.comments = action.payload
             state.loading = false
         })
-        builder.addCase(getQuestions.rejected,(state,action)=>{
+        builder.addCase(getComments.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })
