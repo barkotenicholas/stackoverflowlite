@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddQuestion,DeleteQuesion,GetAllQuestion ,getSingleQuestion} from "../controllers/questions.controller.js";
+import { AddQuestion,DeleteSingleQuesion,GetAllQuestion ,getSingleQuestion ,GetQuestionsForSingleUser} from "../controllers/questions.controller.js";
 
 /* Configure Route */
 const router = Router()
@@ -13,10 +13,12 @@ router.get('/', GetAllQuestion);
 /*Get Single question */
 router.get('/:id',getSingleQuestion)
 
+
+/* Get all questions for single user */
+router.get("/user/:id",GetQuestionsForSingleUser)
+
+
 /*Verify Token route */
-router.delete('/', DeleteQuesion);
-
-/*Add answers */
-
+router.delete('/', DeleteSingleQuesion);
 
 export default router

@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE spGetSingleProcedure @id VARCHAR(200)
 AS
 BEGIN
-    SELECT * FROM Questions WHERE id=@id
+    SELECT * FROM Questions WHERE id=@id UNION
 END

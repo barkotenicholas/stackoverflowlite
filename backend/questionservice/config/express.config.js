@@ -4,6 +4,8 @@ import cors from 'cors';
 import questionRoute from '../routes/questions.route.js';
 import answersRoute from '../routes/answers.route.js';
 import commentRoute from '../routes/comment.route.js';
+import votesRoute from '../routes/votes.route.js';
+import searchRoute from '../routes/search.route.js';
 /* Configure dotenv */
 dotenv.config()
 
@@ -30,7 +32,12 @@ app.use('/question',questionRoute)
 /* Answers routes*/
 app.use('/answers',answersRoute)
 
-/* Question route0 */
+/* Votes Route*/
+app.use('/votes',votesRoute)
 
+/*Comment route */
 app.use('/comment',commentRoute)
+
+/* Search Route */
+app.use('/search',searchRoute)
 export default app

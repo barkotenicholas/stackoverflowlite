@@ -12,6 +12,11 @@ Content-Type: application/json
 GET  http://localhost:5100/question
 
 
+
+###
+GET  http://localhost:5100/question/user/11fb2695-955d-435b-90ce-58551bd438ad
+
+
 ###
 GET  http://localhost:5100/question/3c41e5eb-8586-4136-b96d-2e396a70a023
 
@@ -44,3 +49,22 @@ Content-Type: application/json
 
 ###
 GET  http://localhost:5100/comment/e6f1f5e9-5086-4316-9922-a857df1c6b6f
+
+
+
+###
+POST http://localhost:5100/votes
+Content-Type: application/json
+
+{
+    "answer_id":"e6f1f5e9-5086-4316-9922-a857df1c6b6f",
+    "user_id":"17f732d4-ef68-4e79-aa43-16e69fc060e1",
+    "like":1,   
+    "dislike":0
+}   
+
+
+
+###
+GET  http://localhost:5100/question/search
+Content-Type: application/json

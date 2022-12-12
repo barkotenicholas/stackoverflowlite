@@ -1,9 +1,9 @@
 CREATE
 OR ALTER PROCEDURE spInsertQuestion
-    @id VARCHAR(200),
-    @user_id VARCHAR(200),
-    @question VARCHAR(200),
-    @qdate DATE
+    @id VARCHAR(200) = NULL,
+    @user_id VARCHAR(200) = NULL,
+    @question VARCHAR(200) = NULL,
+    @qdate DATE = NULL
 AS
 BEGIN
     IF EXISTS(SELECT *

@@ -2,6 +2,7 @@ import { v4 } from 'uuid';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import { InsertAnswers, GetAnswers } from '../models/answers.model.js'
+import { GetVotesPerAnswer } from '../models/votes.model.js';
 dotenv.config()
 export const AddAnswer = async (req, res) => {
 
@@ -36,10 +37,15 @@ export const GetAllAnswers = async (req, res) => {
             for (let elem of data) {
                 try {
                     const { id, user_id, question_id, answer, upvote, downvote } = elem;
+                 
+
+                    const votesResult = await GetVotesPerAnswer(id)
+                    const {TotalLikes,TotalDislikes} = votesResult[0]
+                    console.log(TotalDislikes);
                     const user = await axios.get(`http://localhost:5050/auth/${user_id}`)
                     const { firstname, lastname } = user.data
 
-                    generatedResponse.push({ id, firstname, lastname, answer, question_id, upvote, downvote })
+                    generatedResponse.push({ id, firstname, lastname, answer, question_id, TotalLikes, TotalDislikes })
                 } catch (error) {
                     console.log('error' + error);
                 }

@@ -1,5 +1,18 @@
 import poolPromise from '../config/database.config.js'
 
+export const AddSelectUser = async (user)=>{
+    const pool = await poolPromise
+    const response = await pool.request()
+        .input('id', user.id)
+        .input('firstname', user.firstname)
+        .input('lastname', user.lastname)
+        .input('email', user.email)
+        .input('password', user.hashedpwd)
+        .execute('spInsertSelectUser')
+
+    return response.recordsets;
+}
+
 export const AddUser = async (user) => {
 
     const pool = await poolPromise

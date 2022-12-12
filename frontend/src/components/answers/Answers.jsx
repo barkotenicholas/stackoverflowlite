@@ -13,6 +13,8 @@ import {
   getSingleQuestion,
   addAnswer,
 } from "../../redux/slices/answers.slice";
+import { VoteAnswer } from "../../redux/slices/votes.slice";
+
 import ClipLoader from "react-spinners/ClipLoader";
 
 const override: CSSProperties = {
@@ -97,8 +99,27 @@ const Answers = () => {
             <div key={a.id}>
               <div className={styles.answer}>
                 <div className={styles.arrow}>
-                  <MdArrowDropUp size={70} className={styles.up} />
-                  <MdArrowDropDown size={70} className={styles.up} />
+                  <MdArrowDropUp size={70} className={styles.up} onClick={()=>{
+                    const vote= {
+                       answer_id:a.id ,
+                       user_id:currentUser.id,
+                       like:1,
+                       dislike:0
+                    }
+                    dispatch(VoteAnswer(vote));
+                    dispatch(fetchAnswers(id));
+                  }}/>
+                  <MdArrowDropDown size={70} className={styles.up} onClick={()=>{
+                      const vote= {
+                        answer_id:a.id ,
+                        user_id:currentUser.id,
+                        like:0,
+                        dislike:1
+                     }
+                     dispatch(VoteAnswer(vote));
+                     dispatch(fetchAnswers(id));
+
+                  }} />
                 </div>
 
                 <div>
@@ -107,8 +128,8 @@ const Answers = () => {
                 </div>
                 <div>
                   <div className={styles.vote}>
-                    <p className={styles.votes}>Up Votes {a.upvote}</p>
-                    <p className={styles.votes}>Down Votes{a.downvote}</p>
+                    <p className={styles.votes}>Up Votes {a.TotalLikes}</p>
+                    <p className={styles.votes}>Down Votes {a.TotalDislikes}</p>
                   </div>
                   <div>
                     <button

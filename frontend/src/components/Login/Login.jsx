@@ -5,6 +5,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/slices/auth.slice";
 import { clearMessage } from "../../redux/slices/message.slice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
   let navigate = useNavigate();
@@ -47,8 +49,21 @@ export const Login = () => {
       setPasswordError({ error:"", success: "Success" });
       dispatch(login(formValues))
         .unwrap()
-        .then(() => {
-          navigate("/home");
+        .then((value) => {
+          const { user } = value;
+          const apimessage = user.message;
+
+          toast.success(apimessage, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            navigate('/home')
         })
         .catch(() => {});
     }
@@ -135,6 +150,7 @@ export const Login = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
