@@ -20,15 +20,21 @@ export const GetSingleQuestions = async (id) => {
   const result = await pool.request().input('id', id).execute("spGetSingleProcedure");
   return result.recordsets[0]
 }
-export const DeleteQuestion = async (question_id) => {
+export const DeleteQuestion = async (user) => {
   const pool = await poolPromise
   const result = await pool.request()
-    .input('id', question_id)
-    .execute('spInsertQuestion')
+    .input('question_id', user.question_id)
+    .input('user_id',user.id)
+    .execute('spDeleteQuestion')
   return result.rowsAffected;
 }
 export const GetAllQuestionForSingleUser = async (id) => {
   const pool = await poolPromise;
   const result = await pool.request().input('user_id', id).execute("spSelectSingleUserQuestions");
+  return result.recordsets[0]
+}
+export const GetQuestionWithMostAnswers = async (range) => {
+  const pool = await poolPromise;
+  const result = await pool.request().input('range', range).execute("spGetMostAnsweredQuestion");
   return result.recordsets[0]
 }

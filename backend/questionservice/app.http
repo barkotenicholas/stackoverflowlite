@@ -3,33 +3,37 @@ POST  http://localhost:5100/question
 Content-Type: application/json
 
 {
-    "id":"ey3vdgd725",
     "user_id":"17f732d4-ef68-4e79-aa43-16e69fc060e1",
-    "question":"How to you reverse an array ?",
+    "question":"How is programming/",
     "date":"2020-2-15"
 }
 ###
 GET  http://localhost:5100/question
 
-
-
 ###
 GET  http://localhost:5100/question/user/11fb2695-955d-435b-90ce-58551bd438ad
 
+###
+GET  http://localhost:5100/question/a218ebf5-818c-4539-9ab8-6cd19917dfa2
 
 ###
-GET  http://localhost:5100/question/3c41e5eb-8586-4136-b96d-2e396a70a023
+DELETE http://localhost:5100/question
+Content-Type: application/json
+
+{
+    "question_id":"377f0421-8456-48f0-a38f-01f1767abb44",
+    "user_id":"11fb2695-955d-435b-90ce-58551bd43a8ad"
+}
+
 
 ###
 POST  http://localhost:5100/answers
 Content-Type: application/json
 
 {
-    "questionid":"3c41e5eb-8586-4136-b96d-2e396a70a023",
+    "questionid":"377f0421-8456-48f0-a38f-01f1767abb44",
     "uid":"11fb2695-955d-435b-90ce-58551bd438ad",
-    "answer":"You can use the array reversereverese method",
-    "upvote":0,
-    "downvote":0
+    "answer":"You can use the array reversereverese method" 
 }
 
 ###
@@ -68,3 +72,11 @@ Content-Type: application/json
 ###
 GET  http://localhost:5100/question/search
 Content-Type: application/json
+
+###
+POST  http://localhost:5100/question/mostanswered
+Content-Type: application/json
+
+{
+    "range":2
+}

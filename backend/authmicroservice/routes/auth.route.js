@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { login, signup, verify ,getUser ,SignUpTest,signOut } from "../controllers/auth.controller.js";
+import { login, signup, verify ,getUser ,signOut } from "../controllers/auth.controller.js";
 
+import authenticateJWT from "../middlewares/verifyjwt.middleware.js";
 /* Configure Route */
 const router = Router()
 
@@ -15,14 +16,7 @@ router.post('/signup', signup);
 router.post('/logout',signOut)
 
 /*Get User */
-router.get('/:id',getUser)
+router.get('/:id',authenticateJWT,getUser)
 
-/*Verify Token route */
-router.get('/verify', verify);
 
-/* Login Test route */
-router.post('/test',SignUpTest)
-
-/* Sign up route */
-router.post('/testLogin',)
 export default router

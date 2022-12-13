@@ -17,3 +17,9 @@ export const GetAnswers = async(q_id)=>{
   const result = await pool.request().input("question_id",q_id).execute("spGetAllAnswers");
   return result.recordsets[0]
 }
+
+export const MarkPreferred = async(answer_id)=>{
+  const pool = await poolPromise;
+  const result = await pool.request().input("answer_id",answer_id).execute("spUpdatePrefered");
+  return result.rowsAffected
+}

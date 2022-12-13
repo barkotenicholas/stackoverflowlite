@@ -5,23 +5,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 dotenv.config()
 
-export const SignUpTest = async (req, res) => {
-    try {
-        const { firstname, lastname, email, password } = req.body;
-        const id = v4()
-        const hashedpwd = await bcrypt.hash(password, 9);
-        const firstResult = await AddSelectUser({ id, firstname, lastname, email, hashedpwd });
 
-        if (Object.keys(firstResult).length === 0) {
-            return res.status(200).json({ message: "user created successfully" })
-        } else {
-            return res.status(401).json({ message: "user Already exist in system" })
-        }
-
-    } catch (error) {
-        return res.status(403).json({ message: error.message })
-    }
-}
 export const signup = async (req, res) => {
     try {
 
@@ -43,7 +27,7 @@ export const signup = async (req, res) => {
         if (response) return res.status(200).json({ message: "user created successfully" })
 
     } catch (error) {
-        return res.status(403).json({ message: error.message })
+        return res.status(500).json({ message: error.message })
     }
 }
 export const login = async (req, res) => {
@@ -52,20 +36,17 @@ export const login = async (req, res) => {
 
         const { email, password } = req.body;
         const result = await Login(email);
-        if (!result) return res.status(403).json({ message: `user not found` });
+        if (!result) return res.status(403).json({ message: `wrong credentials` });
         const checkpwd = await bcrypt.compare(password, result.password)
-        if (!checkpwd) return res.status(403).json({ message: 'wrong password' });
+        if (!checkpwd) return res.status(403).json({ message: 'wrong credentials' });
         const { id, firstname, lastname } = result;
         const token = jwt.sign(
             {
                 id,
-                firstname,
-                lastname,
-                email
             },
             process.env.JWT_SECRET,
             {
-                expiresIn: '5s'
+                expiresIn: 86400
             }
         )
         return res.status(200).json({
@@ -79,19 +60,31 @@ export const login = async (req, res) => {
         })
 
     } catch (error) {
-        return res.status(403).json({ message: error.message })
+        return res.status(500).json({ message: error.message })
     }
 
 
 }
-export const verify = async (req, res) => {
+export const verify = async (req, res, next) => {
+    try {
+        console.log("verifyyy");
+        const authHeader = req.headers.authorization;
+        if (!authHeader) return res.status(403).send({ message: "No token provided!" });
 
+        const token = authHeader.split(' ')[1];
+
+        let user =jwt.verify(token, process.env.JWT_SECRET);
+
+        if(user) return res.status(200).json({valid:true,user:user.id})
+
+    } catch (error) {
+
+    }
 }
 export const getUser = async (req, res) => {
     try {
 
         const id = req.params.id;
-        console.log(id);
         const result = await GetUser(id);
         if (!result) return res.status(403).json({ message: `user not found` });
         const { firstname, lastname, email } = result;
@@ -103,7 +96,7 @@ export const getUser = async (req, res) => {
         })
 
     } catch (error) {
-        return res.status(403).json({ message: error.message })
+        return res.status(500).json({ message: error.message })
     }
 
 }

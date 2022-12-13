@@ -1,7 +1,9 @@
 CREATE TABLE Users ( 
-    id VARCHAR(150),
-    firstname VARCHAR(80),
-    lastname VARCHAR(80),
-    email VARCHAR(100),
-    password VARCHAR()
+    id VARCHAR(150) PRIMARY KEY NOT NULL,
+    firstname VARCHAR(80) NOT NULL,
+    lastname VARCHAR(80) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL
 )
+
+-- DROP TABLE Users
