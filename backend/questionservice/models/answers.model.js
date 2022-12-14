@@ -7,8 +7,6 @@ export const InsertAnswers = async(answer)=>{
                     .input('question_id',answer.questionid)
                     .input('user_id',answer.user_id)
                     .input('answer',answer.answer)
-                    .input('upvote',answer.upvote)
-                    .input('downvote',answer.downvote)
                     .execute('spInsertAnswer')
     return result.rowsAffected
 }
@@ -18,8 +16,8 @@ export const GetAnswers = async(q_id)=>{
   return result.recordsets[0]
 }
 
-export const MarkPreferred = async(answer_id)=>{
+export const MarkPreferred = async(data)=>{
   const pool = await poolPromise;
-  const result = await pool.request().input("answer_id",answer_id).execute("spUpdatePrefered");
+  const result = await pool.request().input("answer_id",data.answer_id).input("user_id",data.user_id).execute("spUpdatePrefered");
   return result.rowsAffected
 }

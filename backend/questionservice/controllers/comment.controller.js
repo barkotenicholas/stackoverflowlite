@@ -10,7 +10,7 @@ export const addComment = async(req,res)=>{
         const comment ={};
         comment.id = id;
         comment.ansid = req.body.answer_id;
-        comment.uid = req.body.user_id;
+        comment.uid = req.user
         comment.comment = req.body.comment;
 
         const result = await InsertComment(comment)
@@ -28,18 +28,17 @@ export const getComment = async(req,res)=>{
         const question_id = req.params.id;
 
         const response = await GetComment(question_id)
-       
-        const getFullComments =async()=>{
-            response.forEach(element => {
-           
-            });
-        }
+        console.log(response);
         async function procesMultipleCandidates (data) {
             let generatedResponse = []
             for(let elem of data) {
               try {
                 const {id,user_id , answer_id,comment} = elem;
-                const user = await axios.get(`http://localhost:5050/auth/${user_id}`)
+                const authHeader = req.headers.authorization;
+                const token = authHeader.split(' ')[1];
+                console.log(token);
+                const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
+    
                 const {firstname,lastname}  = user.data
 
                 generatedResponse.push({id,firstname,lastname,comment,answer_id})

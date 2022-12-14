@@ -17,7 +17,7 @@ GET  http://localhost:5100/question/user/11fb2695-955d-435b-90ce-58551bd438ad
 GET  http://localhost:5100/question/a218ebf5-818c-4539-9ab8-6cd19917dfa2
 
 ###
-DELETE http://localhost:5100/question
+DELETE http://localhost:5100/question/a96f0ff0-8be7-4d34-b7a5-251180040418
 Content-Type: application/json
 
 {

@@ -11,10 +11,8 @@ export const AddAnswer = async (req, res) => {
         const answer = {};
         answer.id = id;
         answer.questionid = req.body.questionid;
-        answer.user_id = req.body.uid;
+        answer.user_id = req.user;
         answer.answer = req.body.answer;
-        answer.upvote = 0;
-        answer.downvote = 0;
 
         const result = await InsertAnswers(answer)
 
@@ -36,16 +34,15 @@ export const GetAllAnswers = async (req, res) => {
             let generatedResponse = []
             for (let elem of data) {
                 try {
-                    const { id, user_id, question_id, answer, upvote, downvote } = elem;
+                    const { id, user_id, question_id, answer, } = elem;
 
-
-                    const votesResult = await GetVotesPerAnswer(id)
-                    const { TotalLikes, TotalDislikes } = votesResult[0]
-                    console.log(TotalDislikes);
-                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`)
+                    const authHeader = req.headers.authorization;
+                    const token = authHeader.split(' ')[1];
+                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
+        
                     const { firstname, lastname } = user.data
 
-                    generatedResponse.push({ id, firstname, lastname, answer, question_id, TotalLikes, TotalDislikes })
+                    generatedResponse.push({ id, firstname, lastname, answer, question_id })
                 } catch (error) {
                     console.log('error' + error);
                 }
@@ -67,8 +64,8 @@ export const GetAllAnswers = async (req, res) => {
 export const MarkAnswerPreferred = async (req, res) => {
     try {
         const answer_id = req.body.answer_id;
-        const user_id = req.body.user_id;
-        const result = await MarkPreferred(answer_id)
+        const user_id = req.user
+        const result = await MarkPreferred({answer_id,user_id})
         if(result) return res.status(200).json({message:`answer marked as preferred`})
     } catch (error) {
         return res.status(403).json({ message: error.message });

@@ -10,11 +10,11 @@ export const AddQuestion = async (req, res) => {
 
         const question = {};
         question.id = id
-        question.user_id =req.user;
+        question.user_id = req.user;
         question.question = req.body.question;
         question.date = req.body.date;
 
-    
+
         const response = await InsertQuestion(question)
 
         if (response) return res.status(200).json({ message: 'Question added' })
@@ -39,7 +39,7 @@ export const GetAllQuestion = async (req, res) => {
                     const token = authHeader.split(' ')[1];
 
                     const { id, user_id, question, qdate } = elem;
-                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`,{headers:{authorization:`Bearer ${token}`}})
+                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
                     const { firstname, lastname } = user.data
                     const date = qdate.toLocaleDateString("en-US")
 
@@ -66,34 +66,43 @@ export const getSingleQuestion = async (req, res) => {
     try {
         const question_id = req.params.id;
         const response = await GetSingleQuestions(question_id)
-        if (response) {
-            return res.status(404).json({ message: `Question ${question_id} does not exist` })
-        }
-        const { id, user_id, question, qdate } = response[0]
-        var date = qdate.toLocaleDateString("en-US")
 
-        const user = await axios.get(`http://localhost:5050/auth/${user_id}`)
-        if (user) {
-            const { firstname, lastname } = user.data
-            if (response) return res.status(200).json({ id, firstname, lastname, question, date })
+        if (response.length !== 0) {
+            const { id, user_id, question, qdate } = response[0]
+            var date = qdate.toLocaleDateString("en-US")
+            const authHeader = req.headers.authorization;
+            const token = authHeader.split(' ')[1];
+            const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
+
+            if (user) {
+                const { firstname, lastname } = user.data
+                if (response) return res.status(200).json({ id, firstname, lastname, question, date })
+            }
         }
+        return res.status(404).json({ message: `Question ${question_id} does not exist` })
 
     } catch (error) {
+        console.log(error);
         return res.status(403).json({ message: error.message })
     }
 }
 export const DeleteSingleQuesion = async (req, res) => {
     try {
 
-        const question_id = req.body.question_id;
-        const id = req.body.user_id;
+
+        const question_id = req.params.id;
+        const id = req.user
+
+        const response = await GetSingleQuestions(question_id)
+        console.log(response);
         console.log(id);
-        const result = await DeleteQuestion({ question_id, id })
-        console.log(result[0]);
-        if (result[0]) {
-            return res.status(200).json({ message: 'question successfully deleted' })
-        } else {
-            return res.status(200).json({ message: 'question not deleted' })
+        if(response.length !== 0){
+            const result = await DeleteQuestion({ question_id, id })
+            if(result)  return res.status(200).json({ message: 'question successfully deleted' })
+
+        }
+        else {
+            return res.status(200).json({ message: 'question not in database' })
         }
 
     } catch (error) {

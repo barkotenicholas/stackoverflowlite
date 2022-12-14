@@ -23,6 +23,6 @@ router.get('/:id',getSingleQuestion)
 router.get("/user/:id",GetQuestionsForSingleUser)
 
 /*Verify Token route */
-router.delete('/', DeleteSingleQuesion);
+router.delete('/:id',authenticateJWT, DeleteSingleQuesion);
 
 export default router
