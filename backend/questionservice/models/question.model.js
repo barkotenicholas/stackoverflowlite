@@ -35,6 +35,6 @@ export const GetAllQuestionForSingleUser = async (id) => {
 }
 export const GetQuestionWithMostAnswers = async (range) => {
   const pool = await poolPromise;
-  const result = await pool.request().input('range', range).execute("spGetMostAnsweredQuestion");
+  const result = await pool.request().input('scope', range).execute("spGetMostAnsweredQuestion");
   return result.recordsets[0]
 }

@@ -8,6 +8,7 @@ export const getQuestions = createAsyncThunk(
     async (question, thunkAPI) => {
 
         try {
+            console.log("question call");
             const response = await GetQuestions();
             thunkAPI.dispatch(setMessage(response.data.message));
             return response.data;
@@ -32,7 +33,7 @@ export const askQuestion = createAsyncThunk(
         try {
             const response = await AskQuestion(question);
             thunkAPI.dispatch(setMessage(response.data.message));
-            thunkAPI.dispatch(getQuestions("asd"))
+            thunkAPI.dispatch(getQuestions())
             return response.data;
         } catch (error) {
             const message =

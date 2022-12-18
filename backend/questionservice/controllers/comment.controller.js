@@ -26,7 +26,7 @@ export const getComment = async(req,res)=>{
     try {
 
         const question_id = req.params.id;
-
+        console.log("asdasd");
         const response = await GetComment(question_id)
         console.log(response);
         async function procesMultipleCandidates (data) {

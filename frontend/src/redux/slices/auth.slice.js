@@ -51,6 +51,19 @@ export const logout = createAsyncThunk(
         Logout()
     }
 )
+
+export const getAuthor = createAsyncThunk(
+    'auth/getUser',
+    async(id,thunkAPI)=>{
+        try {
+            
+        
+
+        } catch (error) {
+            
+        }
+    }
+)
 const initialState = user
     ? { isLoggedIn: true, user }
     : { isLoggedIn: false, user: null };

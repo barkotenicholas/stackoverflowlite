@@ -34,15 +34,15 @@ export const GetAllAnswers = async (req, res) => {
             let generatedResponse = []
             for (let elem of data) {
                 try {
-                    const { id, user_id, question_id, answer, } = elem;
-
+                    const { id, user_id, question_id, answer, isPreferred} = elem;
+                    const votesResult = await GetVotesPerAnswer(id)
+                    const {TotalLikes,TotalDislikes} = votesResult[0]
                     const authHeader = req.headers.authorization;
                     const token = authHeader.split(' ')[1];
                     const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
-        
+                    console.log(isPreferred);
                     const { firstname, lastname } = user.data
-
-                    generatedResponse.push({ id, firstname, lastname, answer, question_id })
+                    generatedResponse.push({ id, firstname, lastname, answer, question_id,isPreferred,TotalLikes,TotalDislikes})
                 } catch (error) {
                     console.log('error' + error);
                 }
@@ -65,7 +65,10 @@ export const MarkAnswerPreferred = async (req, res) => {
     try {
         const answer_id = req.body.answer_id;
         const user_id = req.user
+        console.log(answer_id);
+        console.log(user_id);
         const result = await MarkPreferred({answer_id,user_id})
+        console.log(result);
         if(result) return res.status(200).json({message:`answer marked as preferred`})
     } catch (error) {
         return res.status(403).json({ message: error.message });

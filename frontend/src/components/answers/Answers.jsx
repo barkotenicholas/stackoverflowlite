@@ -1,8 +1,8 @@
-import React, { CSSProperties } from "react";
+import React from "react";
 import styles from "./answers.module.css";
 import Comments from "../comment/Comments";
-import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
-import AnswerForm from "../answers/AnswerForm";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
+import { IoShieldCheckmark } from "react-icons/io5";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -12,12 +12,19 @@ import {
   fetchAnswers,
   getSingleQuestion,
   addAnswer,
+  markPreferred
 } from "../../redux/slices/answers.slice";
-import { VoteAnswer } from "../../redux/slices/votes.slice";
+import {
+  downVoteAnswer,
+  upVoteAnswer,
+  VoteAnswer,
+} from "../../redux/slices/votes.slice";
 
 import ClipLoader from "react-spinners/ClipLoader";
-
-const override: CSSProperties = {
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import parse from "html-react-parser";
+const override = {
   display: "block",
   margin: "0 auto",
   borderColor: "red",
@@ -27,48 +34,57 @@ const Answers = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  let [color, setColor] = useState("#ffffff");
+  const [color, setColor] = useState("#ffffff");
+  const [value, setValue] = useState("");
 
   if (!currentUser) navigate("/");
 
   const { id } = useParams();
-  const { userid } = useParams();
-  console.log(userid);
   useEffect(() => {
     dispatch(getSingleQuestion(id));
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAnswers(id));
-  }, []);
+  }, [dispatch]);
 
   const [display, setDisplay] = useState(-1);
 
   const toggleElement = (currentIndex) => {
-    // Check if the element that is clicked is already open
     if (currentIndex === display) {
-      setDisplay(-1); // If it is already open, close it.
+      setDisplay(-1); 
     } else {
-      setDisplay(currentIndex); // else open the clicked element
+      setDisplay(currentIndex); 
     }
   };
 
+  const modules = {
+    toolbar: [
+      ["bold", "italic"],
+      ["link", "blockquote", "code-block", "image"],
+      [{ list: "ordered" }, { list: "bullet" }],
+    ],
+  };
   const answers = useSelector((state) => state.answer);
   const info = useSelector((state) => state.answer.questionAsked);
   const loading = useSelector((state) => state.answer.loading);
 
-  const addAnswers = (answer) => {
-    console.log(answer);
+  const disabled = value.length === 0;
+  const addAnswers = () => {
     const postAnswer = {
       questionid: id,
-      uid: currentUser.id,
-      answer: answer,
-      upvote: 0,
-      downvote: 0,
+      answer: value,
     };
-    console.log(postAnswer);
     dispatch(addAnswer(postAnswer));
+    setValue("");
   };
+
+  const handleChange = (answer_id) => {
+    dispatch(markPreferred({answer_id,id}))
+    dispatch(fetchAnswers(id));
+  };
+
+
   return (
     <div className={styles.body}>
       <h2 className={styles.questionHead}>
@@ -96,42 +112,57 @@ const Answers = () => {
       {answers.answers.length > 0 ? (
         <>
           {answers.answers.map((a, index) => (
-            <div key={a.id}>
+            <div key={a.id} className={styles.answerbody}>
               <div className={styles.answer}>
-                <div className={styles.arrow}>
-                  <MdArrowDropUp size={70} className={styles.up} onClick={()=>{
-                    const vote= {
-                       answer_id:a.id ,
-                       user_id:currentUser.id,
-                       like:1,
-                       dislike:0
-                    }
-                    dispatch(VoteAnswer(vote));
-                    dispatch(fetchAnswers(id));
-                  }}/>
-                  <MdArrowDropDown size={70} className={styles.up} onClick={()=>{
-                      const vote= {
-                        answer_id:a.id ,
-                        user_id:currentUser.id,
-                        like:0,
-                        dislike:1
-                     }
-                     dispatch(VoteAnswer(vote));
-                     dispatch(fetchAnswers(id));
+                <div className={styles.answerhead}>
+                  <div className={styles.arrow}>
+                    <GoTriangleUp
+                      size={70}
+                      className={styles.up}
+                      onClick={() => {
+                        const vote = {
+                          answer_id: a.id,
+                        };
+                        dispatch(upVoteAnswer(vote));
+                        dispatch(fetchAnswers(id));
+                      }}
+                    />
+                    <GoTriangleDown
+                      size={70}
+                      className={styles.up}
+                      onClick={() => {
+                        const vote = {
+                          answer_id: a.id,
+                        };
+                        dispatch(downVoteAnswer(vote));
+                        dispatch(fetchAnswers(id));
+                      }}
+                    />
 
-                  }} />
+                    {a.isPreferred && (
+                      <IoShieldCheckmark size={70} className={styles.check} />
+                    )}
+                  </div>
+                  <div className={styles.endAnswer}>
+                    <div className={styles.answertitle}>{parse(a.answer)}</div>
+                    <p className={styles.author}>Answered by ~{a.firstname}</p>
+                  </div>
                 </div>
-
-                <div>
-                  <p className={styles.answertitle}>{a.answer}</p>
-                  <p className={styles.author}>Answered by ~{a.firstname}</p>
-                </div>
-                <div>
-                  <div className={styles.vote}>
+                <div className={styles.answerFooter}>
+                  {currentUser.id === info.user_id && (
+                    <label className={styles.checkPrefered}>
+                      <input
+                        type="checkbox"
+                        defaultChecked={a.isPreferred}
+                        onChange={()=>handleChange(a.id)}
+                      />
+                      Mark Preferred
+                    </label>
+                  )}
+                  <div> </div>
+                  <div className={styles.details}>
                     <p className={styles.votes}>Up Votes {a.TotalLikes}</p>
                     <p className={styles.votes}>Down Votes {a.TotalDislikes}</p>
-                  </div>
-                  <div>
                     <button
                       className={styles.cmtbtn}
                       onClick={() => {
@@ -158,7 +189,16 @@ const Answers = () => {
       )}
 
       <div className={styles.answerForm}>
-        <AnswerForm handleSubmit={addAnswers} />
+        <ReactQuill
+          theme="snow"
+          modules={modules}
+          value={value}
+          onChange={setValue}
+        />
+
+        <button onClick={addAnswers} disabled={disabled}>
+          Submit Answer
+        </button>
       </div>
     </div>
   );

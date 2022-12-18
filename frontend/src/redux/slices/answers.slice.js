@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAnswers, postAnswer } from "../../services/answers.service.js";
+import { getAnswers, postAnswer ,MarkPreferred} from "../../services/answers.service.js";
 import { GetQuestion } from "../../services/questions.service.js";
 import { setMessage } from "./message.slice.js";
 
@@ -72,6 +72,28 @@ export const getSingleQuestion = createAsyncThunk(
     }
 )
 
+export const markPreferred = createAsyncThunk(
+    'question/markPreferred',
+    async(info,thunkAPI)=>{
+        try {
+            console.log(info.answer_id);
+            const response = await MarkPreferred(info.answer_id);
+            thunkAPI.dispatch(getAnswers(info.id));
+            thunkAPI.dispatch(setMessage(response.data.message));
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue();
+        }
+    }
+)
+
 
 
 const initialState = {
@@ -105,6 +127,17 @@ const questionSlice = createSlice({
             state.loading = false
         })
         builder.addCase(getSingleQuestion.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(markPreferred.pending,(state,action)=>{
+            state.loading=true
+        })
+        builder.addCase(markPreferred.fulfilled,(state,action)=>{
+            state.questionAsked = action.payload
+            state.loading = false
+        })
+        builder.addCase(markPreferred.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })

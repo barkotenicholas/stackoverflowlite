@@ -6,7 +6,6 @@ export const Login = async(login)=>{
     return axios.post(API_URL+'/login',login).then((response)=>{
         if(response.data.token){
             sessionStorage.setItem("user", JSON.stringify(response.data));
-        
         }
         return response.data
     })

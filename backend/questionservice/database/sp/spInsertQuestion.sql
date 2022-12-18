@@ -8,7 +8,7 @@ AS
 BEGIN
     IF EXISTS(SELECT *
     FROM Questions
-    WHERE id=@id)
+    WHERE id=@id AND isDeleted = 0)
         BEGIN
         UPDATE Questions SET isDeleted=1 WHERE id=@id
     END
@@ -20,3 +20,4 @@ BEGIN
             (@id, @user_id, @question, @qdate, 0)
     END
 END
+-- update 

@@ -1,10 +1,9 @@
 CREATE OR ALTER PROCEDURE [dbo].[spUpdatePrefered]
-    @answer_id  VARCHAR(200),
-    @user_id VARCHAR(150)
+    @answer_id  VARCHAR(200)
 AS
 BEGIN
     UPDATE Answers
     SET
-        isPreferred = 1
-    WHERE id=@answer_id AND user_id =@user_id 	
+        isPreferred = (CASE isPreferred WHEN 1 THEN 0 ELSE 1 END)
+    WHERE id=@answer_id
 END

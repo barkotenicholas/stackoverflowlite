@@ -9,19 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 const Comments = ({ answer_id }) => {
   const dispatch = useDispatch();
 
+  console.log(answer_id);
+
   useEffect(() => {
     dispatch(getComments(answer_id));
   }, [dispatch, answer_id]);
 
   const comments = useSelector((state) => state.comments);
-  const { user: currentUser } = useSelector((state) => state.auth);
-
-  console.log(comments);
 
   const onSubmit = (text, pid) => {
     const comment = {
       answer_id: answer_id,
-      user_id: currentUser.id,
       comment: text,
     };
     dispatch(postComment(comment));

@@ -1,7 +1,21 @@
 import { Router } from "express";
-import { login, signup, verify ,getUser ,signOut } from "../controllers/auth.controller.js";
+import { login, signup, verify, getUser, signOut } from "../controllers/auth.controller.js";
 
 import authenticateJWT from "../middlewares/verifyjwt.middleware.js";
+
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      User:
+ *          type:object
+ *          required:
+ *             -title
+ *             - author
+ *  
+ * */ 
+
 /* Configure Route */
 const router = Router()
 
@@ -13,10 +27,10 @@ router.post('/signup', signup);
 
 
 /* Login Route  */
-router.post('/logout',signOut)
+router.post('/logout', signOut)
 
 /*Get User */
-router.get('/:id',authenticateJWT,getUser)
+router.get('/:id', authenticateJWT, getUser)
 
 
 export default router
