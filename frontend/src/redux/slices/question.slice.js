@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetQuestions ,AskQuestion } from "../../services/questions.service.js";
+import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion } from "../../services/questions.service.js";
 import { setMessage } from "./message.slice.js";
 
 
@@ -49,6 +49,44 @@ export const askQuestion = createAsyncThunk(
     }
 )
 
+export const getAllUserQuestion = createAsyncThunk(
+    "get",
+    async(userid,thunkAPI)=>{
+        try {
+            const response = await  getQuestionsForSingleuser(userid)
+            return response.data
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+        }
+    }
+)
+
+export const deleteSingleQuestion = createAsyncThunk(
+    'questin/delete',
+    async(question_id,thunkAPI)=>{
+        try {
+            const response = await deleteQuestion(question_id)
+            console.log(response.data);
+            return response.data
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+        }
+    }
+)
 
 const initialState = {
     questions:[],
@@ -68,6 +106,24 @@ const questionSlice = createSlice({
             state.loading = false
         })
         builder.addCase(getQuestions.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(getAllUserQuestion.pending,(state,action)=>{
+            state.loading=true
+        })
+        builder.addCase(getAllUserQuestion.fulfilled,(state,action)=>{
+            state.questions = action.payload
+            state.loading = false
+        })
+        builder.addCase(getAllUserQuestion.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(deleteSingleQuestion.pending,(state,action)=>{
+            state.loading=true
+        })
+        builder.addCase(deleteSingleQuestion.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })

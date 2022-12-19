@@ -9,14 +9,20 @@ export const GetQuestions = async () => {
     return respone
 }
 export const GetQuestion = async (id) => {
-    console.log(`${API_URL}/${id}`);
-    let respone = await axios.get(`${API_URL}/${id}`,{ headers: authHeader() });
+     let respone = await axios.get(`${API_URL}/${id}`,{ headers: authHeader() });
     return respone
 }
 export const AskQuestion = async (question) => {
     return axios.post(API_URL, question,{ headers: authHeader() })
 }
-
+export const getQuestionsForSingleuser = async(uid)=>{
+    const response = axios.get(`${API_URL}/user/${uid}`)
+    return response
+}
+export const deleteQuestion = async(qid)=>{
+    const response = axios.delete(`${API_URL}/${qid}`,{ headers: authHeader() })
+    return response
+}
 export const GetSingleQuestion = async (id) => {
     let respone = await axios.get(`${API_URL}/${id}`,{ headers: authHeader() });
     return respone

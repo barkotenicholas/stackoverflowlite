@@ -4,5 +4,5 @@ AS
 BEGIN
     SELECT *
     FROM Questions
-    WHERE user_id =@user_id
+    WHERE user_id =@user_id AND isDeleted = 0
 END

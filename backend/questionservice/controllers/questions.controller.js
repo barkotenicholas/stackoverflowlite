@@ -116,6 +116,7 @@ export const GetQuestionsForSingleUser = async (req, res) => {
 
     try {
         const user_id = req.params.id;
+        console.log(user_id);
         const result = await GetAllQuestionForSingleUser(user_id)
         return res.status(200).json(result)
     } catch (error) {

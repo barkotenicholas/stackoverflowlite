@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./home.module.css";
 import { GoSearch } from "react-icons/go";
 import AskQuestion from "../AskQuestion/AskQuestion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getQuestions, askQuestion } from "../../redux/slices/question.slice";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +22,10 @@ const override = {
 const Home = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [searchParams,setSearchParams]= useSearchParams()
   let [color, setColor] = useState("#ffffff");
   const [isOpen, setIsOpen] = useState(false);
-
+  const [search, setSearch] = useState("");
   const questionsAsked = useSelector((state) => state.questions);
   const { user: currentUser } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
@@ -50,6 +50,10 @@ const Home = () => {
     dispatch(askQuestion(Question));
   };
 
+  const handleQuery = ()=>{
+    setSearchParams({question:search})
+  }
+
   return (
     <>
       {questionsAsked.loading ? (
@@ -67,8 +71,8 @@ const Home = () => {
         <div>
           <div className={styles.home}>
             <div className={styles.searchBox}>
-              <GoSearch className={styles.search} size={40} />
-              <input type="text" name="" className={styles.searchInput} />
+              <GoSearch className={styles.search} size={40} onClick={handleQuery} />
+              <input type="text" name="" className={styles.searchInput} value={searchParams.get('question')} onChange={(e)=> setSearch(e.target.value) } />
             </div>
 
             <div className={styles.topbar}>
