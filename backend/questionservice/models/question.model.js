@@ -38,3 +38,8 @@ export const GetQuestionWithMostAnswers = async (range) => {
   const result = await pool.request().input('scope', range).execute("spGetMostAnsweredQuestion");
   return result.recordsets[0]
 }
+export const GetQuestionsByDate = async()=>{
+  const pool = await poolPromise;
+  const result = await pool.request().execute("spGetQuestionsByDate");
+  return result.recordsets[0]
+}

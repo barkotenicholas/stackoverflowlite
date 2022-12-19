@@ -27,3 +27,7 @@ export const GetSingleQuestion = async (id) => {
     let respone = await axios.get(`${API_URL}/${id}`,{ headers: authHeader() });
     return respone
 }
+export const getQuestionsByDate = async()=>{
+    let respone = await axios.get(`${API_URL}/bydate`,{headers:authHeader()});
+    return respone
+}

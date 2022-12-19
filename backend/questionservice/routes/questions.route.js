@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddQuestion,DeleteSingleQuesion,GetAllQuestion ,getSingleQuestion ,GetQuestionsForSingleUser ,GetQuestionsWithMostAnswers } from "../controllers/questions.controller.js";
+import { AddQuestion,DeleteSingleQuesion,GetAllQuestion ,getSingleQuestion ,GetQuestionsForSingleUser ,GetQuestionsWithMostAnswers ,GetQuestionsWithDate } from "../controllers/questions.controller.js";
 import authenticateJWT from "../middlewares/verify.middleware.js";
 
 /* Configure Route */
@@ -21,6 +21,9 @@ router.get('/:id',getSingleQuestion)
 
 /* Get all questions for single user */
 router.get("/user/:id",GetQuestionsForSingleUser)
+
+/* Get question by date */
+router.get('/bydate',authenticateJWT,GetQuestionsWithDate)
 
 /*Verify Token route */
 router.delete('/:id',authenticateJWT, DeleteSingleQuesion);

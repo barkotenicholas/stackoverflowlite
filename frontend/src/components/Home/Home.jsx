@@ -4,11 +4,17 @@ import { GoSearch } from "react-icons/go";
 import AskQuestion from "../AskQuestion/AskQuestion";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getQuestions, askQuestion } from "../../redux/slices/question.slice";
+import {
+  getQuestions,
+  askQuestion,
+  getQuestionsWithDate,
+} from "../../redux/slices/question.slice";
 import { useNavigate } from "react-router-dom";
 import { getDate } from "./HomeHelper";
 import { clearMessage } from "../../redux/slices/message.slice";
 import ClipLoader from "react-spinners/ClipLoader";
+import { IoFilterSharp } from "react-icons/io5";
+import "rsuite/dist/rsuite.min.css";
 
 const override = {
   display: "flex",
@@ -22,10 +28,11 @@ const override = {
 const Home = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams,setSearchParams]= useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   let [color, setColor] = useState("#ffffff");
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState(false);
   const questionsAsked = useSelector((state) => state.questions);
   const { user: currentUser } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
@@ -50,9 +57,21 @@ const Home = () => {
     dispatch(askQuestion(Question));
   };
 
-  const handleQuery = ()=>{
-    setSearchParams({question:search})
-  }
+  const onFilterChange = (e) => {
+    if (e.target.value === "All") {
+    } else if (e.target.value === "Recent") {
+      dispatch(getQuestions());
+
+    } else if (e.target.value === "Answered") {
+      console.log(e.target.value);
+    }else{
+      console.log("asd");
+    }
+  };
+
+  const handleQuery = () => {
+    setSearchParams({ question: search });
+  };
 
   return (
     <>
@@ -71,8 +90,18 @@ const Home = () => {
         <div>
           <div className={styles.home}>
             <div className={styles.searchBox}>
-              <GoSearch className={styles.search} size={40} onClick={handleQuery} />
-              <input type="text" name="" className={styles.searchInput} value={searchParams.get('question')} onChange={(e)=> setSearch(e.target.value) } />
+              <GoSearch
+                className={styles.search}
+                size={40}
+                onClick={handleQuery}
+              />
+              <input
+                type="text"
+                name=""
+                className={styles.searchInput}
+                value={searchParams.get("question")}
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </div>
 
             <div className={styles.topbar}>
@@ -81,7 +110,52 @@ const Home = () => {
                 Ask Question
               </button>
             </div>
-
+            <div className={styles.filters}>
+              <span className={styles.filterHead}>
+                Filters:{" "}
+                <IoFilterSharp onClick={() => setFilters((prev) => !prev)} />{" "}
+              </span>
+              {filters && (
+                <div className={styles.filterbody}>
+                  <div className={styles.radio}>
+                    <input
+                      className={styles.radioinput}
+                      defaultChecked
+                      type="radio"
+                      value="All"
+                      name="filter"
+                      id="all"
+                      onChange={(e) => onFilterChange(e)}
+                    />
+                    <label className={styles.label} htmlFor="all">
+                      All
+                    </label>
+                    <input
+                      className={styles.radioinput}
+                      type="radio"
+                      value="Recent"
+                      name="filter"
+                      id="recent"
+                      onChange={(e) => onFilterChange(e)}
+                    />
+                    <label className={styles.label} htmlFor="recent">
+                      Most Recent
+                    </label>
+                    <input
+                      className={styles.radioinput}
+                      type="radio"
+                      value="Answered"
+                      name="filter"
+                      id="answered"
+                      onChange={(e) => onFilterChange(e)}
+                    />
+                    <label className={styles.label} htmlFor="answered">
+                      Most Answered
+                    </label>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className={styles.breakline}></div>
 
             {questionsAsked.questions ? (

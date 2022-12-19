@@ -1,0 +1,5 @@
+CREATE OR ALTER PROCEDURE spGetQuestionsByDate
+AS
+BEGIN
+    SELECT * FROM Questions ORDER BY  qdate DESC
+END

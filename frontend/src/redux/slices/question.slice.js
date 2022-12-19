@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion } from "../../services/questions.service.js";
+import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion ,getQuestionsByDate } from "../../services/questions.service.js";
 import { setMessage } from "./message.slice.js";
 
 
@@ -87,7 +87,25 @@ export const deleteSingleQuestion = createAsyncThunk(
         }
     }
 )
-
+export const getQuestionsWithDate = createAsyncThunk(
+    'question/getQuestionByDate',
+    async(_,thunkAPI)=>{
+        try {
+         
+            const response = await getQuestionsByDate()
+            return response.data
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+        }
+    }
+)
 const initialState = {
     questions:[],
     loading:false,
@@ -124,6 +142,18 @@ const questionSlice = createSlice({
             state.loading=true
         })
         builder.addCase(deleteSingleQuestion.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(getQuestionsWithDate.pending,(state,action)=>{
+            state.loading = true
+            state.error = action.error.message
+        })
+        builder.addCase(getQuestionsWithDate.fulfilled,(state,action)=>{
+            state.questions = action.payload
+            state.loading=false
+        })
+        builder.addCase(getQuestionsWithDate.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })

@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
-import { InsertQuestion, GetQuestions, GetSingleQuestions, GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers } from '../models/question.model.js';
-import axios from 'axios';
+import { InsertQuestion, GetQuestions, GetSingleQuestions, GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers ,GetQuestionsByDate } from '../models/question.model.js';
+import axios from 'axios';  
 
 dotenv.config()
 export const AddQuestion = async (req, res) => {
@@ -150,6 +150,19 @@ export const GetQuestionsWithMostAnswers = async (req, res) => {
         const fullList = await procesMultipleCandidates(result)
         if (fullList) return res.status(200).json(fullList)
     } catch (error) {
+
+    }
+}
+
+export const GetQuestionsWithDate= async (req, res) => {
+
+    try {
+    
+        const result = await GetQuestionsByDate()
+        return res.status(200).json(result)
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
 
     }
 }

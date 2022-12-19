@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
 
 .headerIcon {
@@ -20,4 +21,35 @@
 .icon {
   width: 200px;
   height: auto;
+}
+.dpbutton {
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-size: medium;
+  margin-right: 50px;
+}
+.link {
+  text-decoration: none;
+  color: black;
+}
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: auto;
+  width: 200px;
+  padding: 10px;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  border-radius: 5px;
+  color: black;
+}
+.profile{
+  height: 50px;
+}
+.dpbutton:hover .dropdownContent{
+  visibility: visible;
 }
