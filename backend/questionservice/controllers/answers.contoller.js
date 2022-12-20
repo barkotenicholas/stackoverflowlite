@@ -65,8 +65,6 @@ export const MarkAnswerPreferred = async (req, res) => {
     try {
         const answer_id = req.body.answer_id;
         const user_id = req.user
-        console.log(answer_id);
-        console.log(user_id);
         const result = await MarkPreferred({answer_id,user_id})
         console.log(result);
         if(result) return res.status(200).json({message:`answer marked as preferred`})

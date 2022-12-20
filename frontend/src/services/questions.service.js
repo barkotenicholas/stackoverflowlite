@@ -20,7 +20,7 @@ export const getQuestionsByDate = async()=>{
     return respone
 }
 export const getQuestionsWithMostAnswers=async()=>{
-    let respone = await axios.post(`${API_URL}/mostanswered`,{"scope":10},{headers:authHeader()});
+    let respone = await axios.get(`${API_URL}/mostanswered`,{headers:authHeader()});
     return respone
 }
 export const getQuestionsForSingleuser = async(uid)=>{

@@ -18,6 +18,6 @@ export const GetAnswers = async(q_id)=>{
 
 export const MarkPreferred = async(data)=>{
   const pool = await poolPromise;
-  const result = await pool.request().input("answer_id",data.answer_id).execute("spUpdatePrefered");
+  const result = await pool.request().input("user_id",data.user_id).input("answer_id",data.answer_id).execute("spUpdatePrefered");
   return result.rowsAffected
 }

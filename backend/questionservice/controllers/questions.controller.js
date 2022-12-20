@@ -127,19 +127,27 @@ export const GetQuestionsForSingleUser = async (req, res) => {
 export const GetQuestionsWithMostAnswers = async (req, res) => {
 
     try {
-        const scope = req.body.scope;
-        console.log(scope);
-        const result = await GetQuestionWithMostAnswers(scope)
-        console.log(result);
+      
+        const result = await GetQuestionWithMostAnswers()
         async function procesMultipleCandidates(data) {
             let generatedResponse = []
             for (let elem of data) {
                 try {
                     const { id } = elem;
                     const votesResult = await GetSingleQuestions(id)
-                    const { user_id, question, qdate } = votesResult[0]
+                    if (votesResult.length !== 0) {
+                        const { id, user_id, question, qdate } = votesResult[0]
+                        var date = qdate.toLocaleDateString("en-US")
+                        const authHeader = req.headers.authorization;
+                        const token = authHeader.split(' ')[1];
+                        const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
+            
+                        if (user) {
+                            const { firstname, lastname } = user.data
+                            generatedResponse.push({ id,user_id, firstname, lastname, question, date })
+                        }
+                    }
 
-                    generatedResponse.push({ id, user_id, question , qdate})
                 } catch (error) {
                     console.log('error' + error);
                 }

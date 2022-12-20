@@ -1,9 +1,8 @@
 CREATE OR ALTER PROC spGetMostAnsweredQuestion
-    @scope INT
 AS
 BEGIN
     SELECT [Questions].[id]
-    FROM [StackOverflow].[dbo].[Questions] JOIN [StackOverflow].[dbo].[Answers] ON [Questions].[id] = [Answers].[question_id]
+    FROM [StackOverflow].[dbo].[Questions] LEFT JOIN [StackOverflow].[dbo].[Answers] ON [Questions].[id] = [Answers].[question_id]
     GROUP BY [Questions].[id]
-    HAVING COUNT([Questions].[id]) >= @scope
+    HAVING COUNT([Questions].[id]) > 1 ORDER BY COUNT([Questions].[id]) DESC
 END

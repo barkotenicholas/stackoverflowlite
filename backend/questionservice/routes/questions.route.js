@@ -8,9 +8,9 @@ const router = Router()
 /*Post question Route */
 router.post('/',authenticateJWT,AddQuestion);
 
-
+    
 /* Questions with most answers */
-router.post('/mostanswered',authenticateJWT,GetQuestionsWithMostAnswers)
+router.get('/mostanswered',authenticateJWT,GetQuestionsWithMostAnswers)
 
 /*Get all questions Route */
 router.get('/', GetAllQuestion);

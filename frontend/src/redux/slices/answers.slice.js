@@ -9,7 +9,6 @@ export const fetchAnswers = createAsyncThunk(
     async (id, thunkAPI) => {
 
         try {
-            console.info(id);
             const response = await getAnswers(id);
             thunkAPI.dispatch(setMessage(response.data.message));
             return response.data;
@@ -78,7 +77,9 @@ export const markPreferred = createAsyncThunk(
         try {
             console.log(info.answer_id);
             const response = await MarkPreferred(info.answer_id);
-            thunkAPI.dispatch(getAnswers(info.id));
+            console.log(info.id);
+            thunkAPI.dispatch(fetchAnswers(info.id));
+            thunkAPI.dispatch(getSingleQuestion(info.id))
             thunkAPI.dispatch(setMessage(response.data.message));
             return response.data;
         } catch (error) {
@@ -132,6 +133,7 @@ const questionSlice = createSlice({
         })
         builder.addCase(markPreferred.pending,(state,action)=>{
             state.loading=true
+            state.answers=[]
         })
         builder.addCase(markPreferred.fulfilled,(state,action)=>{
             state.questionAsked = action.payload
