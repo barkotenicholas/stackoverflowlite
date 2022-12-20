@@ -9,7 +9,12 @@
     flex-direction: row;
     align-items: center;
     height: auto;
+    justify-content: space-between;
 }
-.icon{
+.deleteicon{
     color: red;
+}
+
+.editicon{
+    color: lightblue;
 }

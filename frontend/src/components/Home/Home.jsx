@@ -8,7 +8,8 @@ import {
   getQuestions,
   askQuestion,
   getQuestionsWithDate,
-  getMostAnsweredQuestion
+  getMostAnsweredQuestion,
+  getTotalQuestion,
 } from "../../redux/slices/question.slice";
 import { useNavigate } from "react-router-dom";
 import { getDate } from "./HomeHelper";
@@ -26,9 +27,11 @@ const override = {
   borderColor: "red",
 };
 
-const Home = () => {
+export const Home = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
   const [searchParams, setSearchParams] = useSearchParams();
   let [color, setColor] = useState("#ffffff");
   const [isOpen, setIsOpen] = useState(false);
@@ -37,12 +40,20 @@ const Home = () => {
   const questionsAsked = useSelector((state) => state.questions);
   const { user: currentUser } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
+  const [radio, setRadio] = useState("All");
+ 
 
   if (!currentUser) {
     navigate("/");
   }
   useEffect(() => {
-    dispatch(getQuestions());
+    dispatch(
+      getQuestions({
+        pageno: 1,
+        pagesize: 4,
+      })
+    );
+    dispatch(getTotalQuestion());
   }, [dispatch]);
 
   useEffect(() => {
@@ -58,17 +69,51 @@ const Home = () => {
     dispatch(askQuestion(Question));
   };
 
+  const totalQuestions = questionsAsked.total;
+  const totalPages = Math.ceil(totalQuestions?.total / limit);
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+      dispatch(
+        getQuestions({
+          pageno: page + 1,
+          pagesize: limit,
+        })
+      );
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+      dispatch(
+        getQuestions({
+          pageno: page - 1,
+          pagesize: 4,
+        })
+      );
+    }
+  };
+
   const onFilterChange = (e) => {
+    setRadio(e.target.value)
     if (e.target.value === "All") {
-      dispatch(getQuestions());
+      dispatch(
+        getQuestions({
+          pageno: 1,
+          pagesize: 4,
+        })
+      );
     }
     if (e.target.value === "Recent") {
       dispatch(getQuestionsWithDate());
     }
     if (e.target.value === "Answered") {
-      dispatch(getMostAnsweredQuestion())
+      dispatch(getMostAnsweredQuestion());
     }
   };
+
+  console.log(questionsAsked);
 
   const handleQuery = () => {
     setSearchParams({ question: search });
@@ -76,119 +121,142 @@ const Home = () => {
 
   return (
     <>
-    
-        <div>
-          <div className={styles.home}>
-            <div className={styles.searchBox}>
-              <GoSearch
-                className={styles.search}
-                size={40}
-                onClick={handleQuery}
-              />
-              <input
-                type="text"
-                name=""
-                className={styles.searchInput}
-                value={searchParams.get("question")}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+      <div>
+        <div className={styles.home}>
+          <div className={styles.searchBox}>
+            <GoSearch
+              className={styles.search}
+              size={40}
+              onClick={handleQuery}
+            />
+            <input
+              type="text"
+              name=""
+              className={styles.searchInput}
+              value={searchParams.get("question")}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
-            <div className={styles.topbar}>
-              <p className={styles.headerText}>Questions ....</p>
-              <button onClick={() => setIsOpen(true)} className={styles.askbtn}>
-                Ask Question
-              </button>
-            </div>
-            <div className={styles.filters}>
-              <span className={styles.filterHead}>
-                Filters:{" "}
-                <IoFilterSharp onClick={() => setFilters((prev) => !prev)} />{" "}
-              </span>
-              {filters && (
-                <div className={styles.filterbody}>
-                  <div className={styles.radio}>
-                    <input
-                      className={styles.radioinput}
-                      defaultChecked
-                      type="radio"
-                      value="All"
-                      name="filter"
-                      id="all"
-                      onChange={(e) => onFilterChange(e)}
-                    />
-                    <label className={styles.label} htmlFor="all">
-                      All
-                    </label>
-                    <input
-                      className={styles.radioinput}
-                      type="radio"
-                      value="Recent"
-                      name="filter"
-                      id="recent"
-                      onChange={(e) => onFilterChange(e)}
-                    />
-                    <label className={styles.label} htmlFor="recent">
-                      Most Recent
-                    </label>
-                    <input
-                      className={styles.radioinput}
-                      type="radio"
-                      value="Answered"
-                      name="filter"
-                      id="answered"
-                      onChange={(e) => onFilterChange(e)}
-                    />
-                    <label className={styles.label} htmlFor="answered">
-                      Most Answered
-                    </label>
-                  </div>
+          <div className={styles.topbar}>
+            <p className={styles.headerText}>Questions ....</p>
+            <button onClick={() => setIsOpen(true)} className={styles.askbtn}>
+              Ask Question
+            </button>
+          </div>
+          <div className={styles.filters}>
+            <span className={styles.filterHead}>
+              Filters:{" "}
+              <IoFilterSharp onClick={() => setFilters((prev) => !prev)} />{" "}
+            </span>
+            {filters && (
+              <div className={styles.filterbody}>
+                <div className={styles.radio}>
+                  <input
+                    className={styles.radioinput}
+                    defaultChecked
+                    type="radio"
+                    value="All"
+                    name="filter"
+                    id="all"
+                    onChange={(e) => onFilterChange(e)}
+                  />
+                  <label className={styles.label} htmlFor="all">
+                    All
+                  </label>
+                  <input
+                    className={styles.radioinput}
+                    type="radio"
+                    value="Recent"
+                    name="filter"
+                    id="recent"
+                    onChange={(e) => onFilterChange(e)}
+                  />
+                  <label className={styles.label} htmlFor="recent">
+                    Most Recent
+                  </label>
+                  <input
+                    className={styles.radioinput}
+                    type="radio"
+                    value="Answered"
+                    name="filter"
+                    id="answered"
+                    onChange={(e) => onFilterChange(e)}
+                  />
+                  <label className={styles.label} htmlFor="answered">
+                    Most Answered
+                  </label>
                 </div>
-              )}
-            </div>
-            <div className={styles.breakline}></div>
-
-            {questionsAsked.loading ? (
-              <div className={styles.loader}>
-                <ClipLoader
-                  color={color}
-                  loading={true}
-                  cssOverride={override}
-                  size={150}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                />
               </div>
-            ) : (
-              <>
-                {questionsAsked.questions ? (
-                  questionsAsked.questions.map((question, index) => (
-                    <Link
-                      to={`/answers/${question.id}`}
-                      className={styles.link}
-                      key={index}
-                    >
-                      <div className={styles.questions}>
-                        <p className={styles.question}>{question.question}</p>
-                        <div className={styles.info}>
-                          <p className={styles.author}>
-                            Author ~ {question.firstname}
-                          </p>
-                          <p>{question.date}</p>
-                        </div>
-                      </div>
-                    </Link>
-                  ))
-                ) : (
-                  <p>No questions asked </p>
-                )}
-              </>
             )}
           </div>
-          {isOpen && (
-            <AskQuestion setIsOpen={setIsOpen} handleSubmit={handleSubmit} />
+          <div className={styles.breakline}></div>
+
+          {questionsAsked.loading ? (
+            <div className={styles.loader}>
+              <ClipLoader
+                color={color}
+                loading={true}
+                cssOverride={override}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </div>
+          ) : (
+            <>
+              {questionsAsked.questions ? (
+                questionsAsked.questions.map((question, index) => (
+                  <Link
+                    to={`/answers/${question.id}`}
+                    className={styles.link}
+                    key={index}
+                  >
+                    <div className={styles.questions}>
+                      <p className={styles.question}>{question.question}</p>
+                      <div className={styles.info}>
+                        <p className={styles.author}>
+                          Author ~ {question.firstname}
+                        </p>
+                        <p>{question.date}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p>No questions asked </p>
+              )}
+
+             { radio === "All" && (
+               <div className={styles.pagination}>
+               <button
+                 className={styles.likebtn}
+                 onClick={handlePrevPage}
+                 disabled={page === 1}
+               >
+                 Prev
+               </button>
+               <span>{page}</span>
+               Out of
+               <span>{totalPages}</span>
+               <button
+                 className={styles.likebtn}
+                 onClick={handleNextPage}
+                 disabled={page === totalPages}
+               >
+                 Next
+               </button>
+             </div>
+             )
+
+             }
+            </>
           )}
         </div>
+        {isOpen && (
+          <AskQuestion setIsOpen={setIsOpen} handleSubmit={handleSubmit} />
+        )}
+      </div>
     </>
   );
 };

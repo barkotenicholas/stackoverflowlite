@@ -9,7 +9,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SignUp = () => {
+export const SignUp = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);

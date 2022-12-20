@@ -12,7 +12,7 @@ export const InsertAnswers = async(answer)=>{
 }
 export const GetAnswers = async(q_id)=>{
   const pool = await poolPromise;
-  const result = await pool.request().input("question_id",q_id).execute("spGetAllAnswers");
+  const result = await pool.request().input("question_id",q_id).execute("fetchAnswers");
   return result.recordsets[0]
 }
 

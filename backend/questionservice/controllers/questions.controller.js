@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
-import { InsertQuestion, GetQuestions, GetSingleQuestions, GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers ,GetQuestionsByDate } from '../models/question.model.js';
+import { InsertQuestion, GetQuestions, GetSingleQuestions, GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers ,GetQuestionsByDate, GetTotalQuestionindb } from '../models/question.model.js';
 import axios from 'axios';  
 
 dotenv.config()
@@ -29,7 +29,13 @@ export const GetAllQuestion = async (req, res) => {
 
     try {
 
-        const result = await GetQuestions()
+        const info={}
+        info.pageno= req.params.pageno;
+        info.pagesize = req.params.pagesize;
+
+        console.log(info);
+        const result = await GetQuestions(info)
+
         if (result.length === 0) {
             return res.status(403).json({ message: `no questions asked on platform` })
         }
@@ -59,6 +65,7 @@ export const GetAllQuestion = async (req, res) => {
 
 
     } catch (error) {
+        console.log(error.message);
         return res.status(403).json({ message: error.message })
     }
 
@@ -198,4 +205,16 @@ export const GetQuestionsWithDate= async (req, res) => {
         return res.status(500).json({ message: error.message })
 
     }
+}
+export const GetTotalQuestionin = async (req,res)=>{
+
+    try {
+        const result = await GetTotalQuestionindb()
+        if (result) {
+            return res.status(200).json(result[0])
+        }
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+
 }

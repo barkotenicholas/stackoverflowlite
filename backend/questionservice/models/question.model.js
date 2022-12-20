@@ -10,9 +10,9 @@ export const InsertQuestion = async (question) => {
     .execute('spInsertQuestion')
   return result.rowsAffected
 }
-export const GetQuestions = async () => {
+export const GetQuestions = async (info) => {
   const pool = await poolPromise;
-  const result = await pool.request().execute("spSelectQuestion");
+  const result = await pool.request().input("pagenumber",info.pageno).input("pagesize",info.pagesize).execute("spSelectQuestion");
   return result.recordsets[0]
 }
 export const GetSingleQuestions = async (id) => {
@@ -41,5 +41,10 @@ export const GetQuestionWithMostAnswers = async () => {
 export const GetQuestionsByDate = async()=>{
   const pool = await poolPromise;
   const result = await pool.request().execute("spGetQuestionsByDate");
+  return result.recordsets[0]
+}
+export const GetTotalQuestionindb = async()=>{
+  const pool = await poolPromise
+  const result = await pool.request().execute("spGetTotalQuestions")
   return result.recordsets[0]
 }

@@ -30,7 +30,7 @@ const override = {
   borderColor: "red",
 };
 
-const Answers = () => {
+export const Answers = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   let navigate = useNavigate();
   const dispatch = useDispatch();

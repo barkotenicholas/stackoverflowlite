@@ -125,6 +125,16 @@
 .radioinput:checked +.label {
     background:#5a3939;
 }
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+}
+.likebtn{
+    
+}
 /* Media queries */
 @media screen and (max-width: 480px) {
     .home{
