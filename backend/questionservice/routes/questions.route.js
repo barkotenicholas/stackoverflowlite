@@ -10,10 +10,13 @@ router.post('/',authenticateJWT,AddQuestion);
 
 
 /* Questions with most answers */
-router.post('/mostanswered',GetQuestionsWithMostAnswers)
+router.post('/mostanswered',authenticateJWT,GetQuestionsWithMostAnswers)
 
 /*Get all questions Route */
 router.get('/', GetAllQuestion);
+
+/* Get question by date */
+router.get('/bydate',authenticateJWT,GetQuestionsWithDate)
 
 /*Get Single question */
 router.get('/:id',getSingleQuestion)
@@ -22,8 +25,7 @@ router.get('/:id',getSingleQuestion)
 /* Get all questions for single user */
 router.get("/user/:id",GetQuestionsForSingleUser)
 
-/* Get question by date */
-router.get('/bydate',authenticateJWT,GetQuestionsWithDate)
+
 
 /*Verify Token route */
 router.delete('/:id',authenticateJWT, DeleteSingleQuesion);

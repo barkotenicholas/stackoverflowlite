@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion ,getQuestionsByDate } from "../../services/questions.service.js";
+import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion ,getQuestionsByDate ,getQuestionsWithMostAnswers } from "../../services/questions.service.js";
 import { setMessage } from "./message.slice.js";
 
 
@@ -25,7 +25,6 @@ export const getQuestions = createAsyncThunk(
 
     }
 )
-
 export const askQuestion = createAsyncThunk(
     'questions/askquestions',
     async (question, thunkAPI) => {
@@ -48,7 +47,6 @@ export const askQuestion = createAsyncThunk(
 
     }
 )
-
 export const getAllUserQuestion = createAsyncThunk(
     "get",
     async(userid,thunkAPI)=>{
@@ -67,7 +65,6 @@ export const getAllUserQuestion = createAsyncThunk(
         }
     }
 )
-
 export const deleteSingleQuestion = createAsyncThunk(
     'questin/delete',
     async(question_id,thunkAPI)=>{
@@ -88,11 +85,28 @@ export const deleteSingleQuestion = createAsyncThunk(
     }
 )
 export const getQuestionsWithDate = createAsyncThunk(
-    'question/getQuestionByDate',
+    'questin/getQuestionDate',
+    async(questin,thunkAPI)=>{
+        try {
+            const response = await getQuestionsByDate()
+            return response.data
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+        }
+    }
+)
+export const getMostAnsweredQuestion = createAsyncThunk(
+    'questions/mostAnswered',
     async(_,thunkAPI)=>{
         try {
-         
-            const response = await getQuestionsByDate()
+            const response = await getQuestionsWithMostAnswers()
             return response.data
         } catch (error) {
             const message =
@@ -147,13 +161,23 @@ const questionSlice = createSlice({
         })
         builder.addCase(getQuestionsWithDate.pending,(state,action)=>{
             state.loading = true
-            state.error = action.error.message
         })
         builder.addCase(getQuestionsWithDate.fulfilled,(state,action)=>{
             state.questions = action.payload
             state.loading=false
         })
         builder.addCase(getQuestionsWithDate.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(getMostAnsweredQuestion.pending,(state,action)=>{
+            state.loading = true
+        })
+        builder.addCase(getMostAnsweredQuestion.fulfilled,(state,action)=>{
+            state.questions = action.payload
+            state.loading=false
+        })
+        builder.addCase(getMostAnsweredQuestion.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })

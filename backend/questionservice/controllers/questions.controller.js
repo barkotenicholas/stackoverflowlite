@@ -130,6 +130,7 @@ export const GetQuestionsWithMostAnswers = async (req, res) => {
         const scope = req.body.scope;
         console.log(scope);
         const result = await GetQuestionWithMostAnswers(scope)
+        console.log(result);
         async function procesMultipleCandidates(data) {
             let generatedResponse = []
             for (let elem of data) {
@@ -143,7 +144,6 @@ export const GetQuestionsWithMostAnswers = async (req, res) => {
                     console.log('error' + error);
                 }
             }
-            console.log('complete all')
             return generatedResponse 
         }
 
@@ -153,13 +153,38 @@ export const GetQuestionsWithMostAnswers = async (req, res) => {
 
     }
 }
-
 export const GetQuestionsWithDate= async (req, res) => {
 
     try {
     
         const result = await GetQuestionsByDate()
-        return res.status(200).json(result)
+        if (result.length === 0) {
+            return res.status(403).json({ message: `no questions asked on platform` })
+        }
+        async function procesMultipleCandidates(data) {
+            let generatedResponse = []
+            for (let elem of data) {
+                try {
+
+                    const authHeader = req.headers.authorization;
+                    const token = authHeader.split(' ')[1];
+                    const { id, user_id, question, qdate } = elem;
+                    const user = await axios.get(`http://localhost:5050/auth/${user_id}`, { headers: { authorization: `Bearer ${token}` } })
+                    const { firstname, lastname } = user.data
+                    const date = qdate.toLocaleDateString("en-US")
+
+                    generatedResponse.push({ id, firstname, lastname, question, date})
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }
+            return generatedResponse
+        }
+
+        const fullList = await procesMultipleCandidates(result)
+        if (fullList) return res.status(200).json(fullList)
+
+
 
     } catch (error) {
         return res.status(500).json({ message: error.message })

@@ -8,6 +8,7 @@ import {
   getQuestions,
   askQuestion,
   getQuestionsWithDate,
+  getMostAnsweredQuestion
 } from "../../redux/slices/question.slice";
 import { useNavigate } from "react-router-dom";
 import { getDate } from "./HomeHelper";
@@ -59,13 +60,13 @@ const Home = () => {
 
   const onFilterChange = (e) => {
     if (e.target.value === "All") {
-    } else if (e.target.value === "Recent") {
       dispatch(getQuestions());
-
-    } else if (e.target.value === "Answered") {
-      console.log(e.target.value);
-    }else{
-      console.log("asd");
+    }
+    if (e.target.value === "Recent") {
+      dispatch(getQuestionsWithDate());
+    }
+    if (e.target.value === "Answered") {
+      dispatch(getMostAnsweredQuestion())
     }
   };
 
@@ -75,18 +76,7 @@ const Home = () => {
 
   return (
     <>
-      {questionsAsked.loading ? (
-        <div className={styles.loader}>
-          <ClipLoader
-            color={color}
-            loading={true}
-            cssOverride={override}
-            size={150}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-        </div>
-      ) : (
+    
         <div>
           <div className={styles.home}>
             <div className={styles.searchBox}>
@@ -158,33 +148,47 @@ const Home = () => {
             </div>
             <div className={styles.breakline}></div>
 
-            {questionsAsked.questions ? (
-              questionsAsked.questions.map((question, index) => (
-                <Link
-                  to={`/answers/${question.id}`}
-                  className={styles.link}
-                  key={index}
-                >
-                  <div className={styles.questions}>
-                    <p className={styles.question}>{question.question}</p>
-                    <div className={styles.info}>
-                      <p className={styles.author}>
-                        Author ~ {question.firstname}
-                      </p>
-                      <p>{question.date}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))
+            {questionsAsked.loading ? (
+              <div className={styles.loader}>
+                <ClipLoader
+                  color={color}
+                  loading={true}
+                  cssOverride={override}
+                  size={150}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
             ) : (
-              <p>No questions asked </p>
+              <>
+                {questionsAsked.questions ? (
+                  questionsAsked.questions.map((question, index) => (
+                    <Link
+                      to={`/answers/${question.id}`}
+                      className={styles.link}
+                      key={index}
+                    >
+                      <div className={styles.questions}>
+                        <p className={styles.question}>{question.question}</p>
+                        <div className={styles.info}>
+                          <p className={styles.author}>
+                            Author ~ {question.firstname}
+                          </p>
+                          <p>{question.date}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p>No questions asked </p>
+                )}
+              </>
             )}
           </div>
           {isOpen && (
             <AskQuestion setIsOpen={setIsOpen} handleSubmit={handleSubmit} />
           )}
         </div>
-      )}
     </>
   );
 };
