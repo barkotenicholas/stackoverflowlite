@@ -1,0 +1,134 @@
+.body {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+.message{
+  text-align: center;
+  margin:  10px 50px;
+  background-color: #f29b9b;
+  border-radius: 5px;
+}
+.loginbody {
+  width: 450px;
+  height: auto;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  margin: 70px;
+  display: flex;
+  flex-direction: column;
+}
+.loginHead {
+  font-weight: bolder;
+  font-size: 30px;
+  margin:0px 50px
+}
+.loginTitle {
+  font-weight: lighter;
+  margin:0px 50px
+
+}
+.email {
+  padding: 15px 20px;
+  margin: 20px 50px;
+  border: none;
+  border-radius: 10px;
+}
+.password {
+  padding: 15px 20px;
+  margin: 20px 50px;
+  border: none;
+  border-radius: 10px;
+}
+::placeholder {
+  color: black;
+  font-size: large;
+}
+.loginbtn {
+  border: none;
+  background-color: #f29b9b;
+  color: white;
+  width: 60px;
+  height: 40px;
+  border-radius: 5px;
+  margin:15px 50px;
+}
+.terms {
+  font-weight: lighter;
+  margin:0px 50px;
+}
+.error {
+  padding: 5px;
+  background-color: lightcoral;
+  color: white;
+  border-radius: 10px;
+  margin: 0px 50px;
+}
+.success {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2px 15px;
+  margin: 0px 50px;
+  background-color: lightgreen;
+  color: white;
+  border-radius: 10px;
+}
+.successicon {
+  color: green;
+}
+
+@media screen and (width:480px) {
+  .body {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 10px;
+  }
+  .loginbody {
+    width: auto;
+    height: auto;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    margin: 70px;
+    display: flex;
+    flex-direction: column;
+  }
+  .message{
+    text-align: center;
+    margin:  5px 25px;
+    background-color: #f29b9b;
+    border-radius: 5px;
+  }
+  .loginHead {
+    font-weight: bolder;
+    font-size: 20px;
+    margin:10px 50px
+  }
+  .loginTitle {
+    font-weight: lighter;
+    margin:0px 50px;
+    font-size: 15px;
+  }
+  .email {
+    padding: 7px 10px;
+    margin: 10px 50px;
+    border: none;
+    border-radius: 3px;
+  }
+  .password {
+    padding: 7px 10px;
+    margin: 10px 50px;
+    border: none;
+    border-radius: 3px;
+  }
+  .terms {
+    font-weight: lighter;
+    margin:0px 50px;
+    font-size: 15px;
+
+  }
+}

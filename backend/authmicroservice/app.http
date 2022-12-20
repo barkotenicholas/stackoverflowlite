@@ -1,0 +1,37 @@
+###
+POST http://localhost:5050/auth/signup
+Content-Type: application/json
+
+{   
+    "firstname":"Evans",
+    "lastname":"Otieno",
+    "email":"evans@gmail.com",
+    "password":"Barpello@320"
+}
+###
+POST http://localhost:5050/auth/login
+Content-Type: application/json
+
+{
+    "email":"barkotenicholas@gmail.com",
+    "password":"Barpello@320"
+}
+###
+GET http://localhost:5050/auth/11fb2695-955d-435b-90ce-58551bd438ad
+
+
+###
+POST http://localhost:5050/auth/test
+Content-Type: application/json
+
+{   
+    "firstname":"melisa",
+    "lastname":"meli",
+    "email":"melisa@gmail.com",
+    "password":"Barpello@320"
+}
+
+###
+POST http://localhost:5050/auth/logout
+Content-Type: application/json
+authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExZmIyNjk1LTk1NWQtNDM1Yi05MGNlLTU4NTUxYmQ0MzhhZCIsImZpcnN0bmFtZSI6Ik5pY2hvbGFzIiwibGFzdG5hbWUiOiJCYXJrb3RlIiwiZW1haWwiOiJiYXJrb3RlbmljaG9sYXNAZ21haWwuY29tIiwiaWF0IjoxNjcwNzgxNjMwLCJleHAiOjE2NzA3ODE2MzV9.LqTy8PsN9leJXmTaTW0CDOnfUiOsMyWcoa0Rlg2wk44"

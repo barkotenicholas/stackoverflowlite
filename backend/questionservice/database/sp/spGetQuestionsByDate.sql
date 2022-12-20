@@ -1,0 +1,5 @@
+CREATE OR ALTER PROCEDURE spGetQuestionsByDate
+AS
+BEGIN
+    SELECT * FROM Questions WHERE isDeleted=0 ORDER BY  qdate DESC 
+END
