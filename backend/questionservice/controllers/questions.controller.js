@@ -5,7 +5,7 @@ import axios from 'axios';
 
 dotenv.config()
 export const AddQuestion = async (req, res) => {
-
+    console.log(req.body);
     try {
         const id = v4()
 
@@ -21,6 +21,9 @@ export const AddQuestion = async (req, res) => {
         if (response) return res.status(200).json({ message: 'Question added' })
 
     } catch (error) {
+
+        console.log(error.message);
+
         return res.status(403).json({ message: error.message });
     }
 }

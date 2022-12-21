@@ -15,6 +15,10 @@ export const Login = () => {
 
   const dispatch = useDispatch();
 
+    if(isLoggedIn){
+      navigate('/home')
+    }
+
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
@@ -53,16 +57,6 @@ export const Login = () => {
           const { user } = value;
           const apimessage = user.message;
 
-          toast.success(apimessage, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
             navigate('/home')
         })
         .catch(() => {});

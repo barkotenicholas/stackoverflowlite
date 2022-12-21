@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slice.js";
 import { Register, Login, Logout } from '../../services/auth.service.js';
+import { toast } from "react-toastify";
 
 const user = JSON.parse(sessionStorage.getItem('user'));
 
@@ -11,6 +12,16 @@ export const register = createAsyncThunk(
         try {
             const response = await Register(User);
             thunkAPI.dispatch(setMessage(response.data.message));
+            toast.success(response.data.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             return response.data;
         } catch (error) {
             const message =
@@ -20,6 +31,16 @@ export const register = createAsyncThunk(
                 error.message ||
                 error.toString();
             thunkAPI.dispatch(setMessage(message));
+            toast.error(message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             return thunkAPI.rejectWithValue();
         }
 
@@ -31,6 +52,17 @@ export const login = createAsyncThunk(
     async (loginData, thunkAPI) => {
         try {
             const response = await Login(loginData)
+
+            toast.success("Success", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             return { user: response }
         } catch (error) {
             const message =
@@ -39,6 +71,7 @@ export const login = createAsyncThunk(
                     error.response.data.message) ||
                 error.message ||
                 error.toString();
+          
             thunkAPI.dispatch(setMessage(message));
             return thunkAPI.rejectWithValue();
         }
@@ -48,19 +81,29 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk(
     'auth/logout',
     async () => {
+        toast.info('You have successfully logged out', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         Logout()
     }
 )
 
 export const getAuthor = createAsyncThunk(
     'auth/getUser',
-    async(id,thunkAPI)=>{
+    async (id, thunkAPI) => {
         try {
-            
-        
+
+
 
         } catch (error) {
-            
+
         }
     }
 )

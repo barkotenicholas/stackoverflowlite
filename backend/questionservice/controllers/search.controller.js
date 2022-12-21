@@ -1,5 +1,5 @@
 import { searchQuery } from "../models/search.model.js";
-
+import axios from "axios";
 export const SearchQuestion = async (req, res) => {
 
     try {

@@ -5,5 +5,5 @@ AS
 BEGIN
         SELECT *
         FROM Questions
-        WHERE question LIKE '%' + @Question + '%'
+        WHERE question LIKE '%' + @Question + '%' AND isDeleted = 0
 END

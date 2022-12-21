@@ -3,7 +3,6 @@ import { RiCloseLine } from "react-icons/ri";
 import styles from "./ask.module.css";
 
 const AskQuestion = ({ setIsOpen, handleSubmit ,edit }) => {
-
   const initialValue={question:""}
   if (edit !== undefined) {
 
@@ -15,18 +14,23 @@ const AskQuestion = ({ setIsOpen, handleSubmit ,edit }) => {
   }
   const [question, setQuestion] = useState(initialValue);
 
-  const isDisabled = question.length === 0;
+  const isDisabled = initialValue.question.length === 0;
 
   const onSubmit = (event) => {
     event.preventDefault();
-    handleSubmit(question);
-    setQuestion("");
-    setIsOpen(false);
+    if (question.question===""){
+
+    }else{
+      handleSubmit(question);
+      setQuestion("");
+      setIsOpen(false);
+    }
+  
   };
 
   const updateData = e =>{
     setQuestion({...question ,question:e.target.value})
-    
+
   }
   return (
     <>
@@ -55,7 +59,6 @@ const AskQuestion = ({ setIsOpen, handleSubmit ,edit }) => {
               <div className={styles.actionsContainer}>
                 <button
                   className={styles.cancelBtn}
-                  disabled={isDisabled}
                 >
                   Ask Question
                 </button>

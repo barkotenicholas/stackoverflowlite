@@ -162,6 +162,7 @@ export const Answers = () => {
                         <label className={styles.checkPrefered}>
                           <input
                             type="checkbox"
+                            checked={a.isPreferred}
                             defaultChecked={a.isPreferred}
                             onChange={() => handleChange(a.id)}
                           />

@@ -63,11 +63,15 @@ export const Home = () => {
   const handleSubmit = (question) => {
     let newdate = getDate();
     const Question = {
-      question: question,
+      question: question.question,
       date: newdate,
     };
     dispatch(askQuestion(Question));
   };
+
+  if(search === null){
+
+  }
 
   const totalQuestions = questionsAsked.total;
   const totalPages = Math.ceil(totalQuestions?.total / limit);
@@ -119,9 +123,19 @@ export const Home = () => {
 
     setSearchParams({ question: search });
 
-    if(search!==null){
+    if(search===""){
+      dispatch(
+        getQuestions({
+          pageno: 1,
+          pagesize: 4,
+        })
+      );
+    }else{
       dispatch(searchQueryQuestion(search))
+     
     }
+
+
   };
   const handleSearch = e =>{
     setSearchParams({ question: e.target.value });

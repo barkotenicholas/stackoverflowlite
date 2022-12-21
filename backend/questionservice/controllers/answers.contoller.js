@@ -56,6 +56,7 @@ export const GetAllAnswers = async (req, res) => {
 
 
     } catch (error) {
+        console.log(error.message)
         return res.status(403).json({ message: error.message })
     }
 

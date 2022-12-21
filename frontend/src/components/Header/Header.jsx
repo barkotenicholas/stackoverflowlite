@@ -1,16 +1,22 @@
 import styles from "./header.module.css";
 import { ReactComponent as IconMenu } from "../../assets/headicon.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RiArrowDropDownFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import { logout } from "../../redux/slices/auth.slice";
 const Header = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
-
+  const dispatch = useDispatch();
   const handleOpen = () => {
     setOpen(!open);
+  };
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/')
   };
 
   return (
@@ -28,7 +34,7 @@ const Header = () => {
               <Link to={`/profile`} className={styles.link}>
                 Profile
               </Link>
-              <a>LogOut</a>
+              <a onClick={handleLogout}>LogOut</a>
             </div>
           )}
         </div>

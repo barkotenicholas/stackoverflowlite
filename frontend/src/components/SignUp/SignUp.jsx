@@ -111,17 +111,7 @@ export const SignUp = () => {
   return (
     <div className={styles.body}>
       <div className={styles.content}>
-      {message && (
-        <div >
-          <div
-            className={successful ? "success" : "danger"}
-            role="alert"
-          >
-            {message}
-          </div>
-        </div>
-      )}
-
+     
         <h4 className={styles.registerHeader}>Register Here</h4>
         <div className={styles.contentBody}>
           <div>
@@ -170,6 +160,7 @@ export const SignUp = () => {
             <input
               className={styles.input}
               name="password"
+              type='password'
               value={formValues.password}
               onChange={handleChange}
               placeholder="Enter password "
@@ -184,6 +175,7 @@ export const SignUp = () => {
             <input
               className={styles.input}
               name="rpass"
+              type='password'
               value={formValues.rpass}
               onChange={handleChange}
               placeholder="Repeat Password"
