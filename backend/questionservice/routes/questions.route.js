@@ -7,7 +7,8 @@ import {
     GetQuestionsForSingleUser,
     GetQuestionsWithMostAnswers,
     GetQuestionsWithDate,
-    GetTotalQuestionin } from "../controllers/questions.controller.js";
+    GetTotalQuestionin ,
+    EditUserQuestion} from "../controllers/questions.controller.js";
 import authenticateJWT from "../middlewares/verify.middleware.js";
 
 /* Configure Route */
@@ -16,6 +17,8 @@ const router = Router()
 /*Post question Route */
 router.post('/',authenticateJWT,AddQuestion);
 
+/* Edit question  */
+router.put('/',authenticateJWT,EditUserQuestion)
 /*Get all questions Route */
 router.get('/:pageno/:pagesize', authenticateJWT,GetAllQuestion);
     

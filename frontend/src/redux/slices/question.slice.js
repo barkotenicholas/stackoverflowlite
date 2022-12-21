@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion ,getQuestionsByDate ,getQuestionsWithMostAnswers, getTotal } from "../../services/questions.service.js";
+import { GetQuestions ,AskQuestion ,getQuestionsForSingleuser ,deleteQuestion ,getQuestionsByDate ,getQuestionsWithMostAnswers, getTotal, EditQuestion } from "../../services/questions.service.js";
+import { searchQuestion } from "../../services/search.service.js";
 import { setMessage } from "./message.slice.js";
 
 
@@ -33,6 +34,28 @@ export const askQuestion = createAsyncThunk(
             const response = await AskQuestion(question);
             thunkAPI.dispatch(setMessage(response.data.message));
             thunkAPI.dispatch(getQuestions())
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue();
+        }
+
+    }
+)
+export const editQuiz = createAsyncThunk(
+    'questions/editQuestion',
+    async (question, thunkAPI) => {
+
+        try {
+            const response = await EditQuestion(question.question);
+            thunkAPI.dispatch(setMessage(response.data.message));
+            thunkAPI.dispatch((getAllUserQuestion(question.currentUser.id)))
             return response.data;
         } catch (error) {
             const message =
@@ -138,6 +161,25 @@ export const getTotalQuestion = createAsyncThunk(
         }
     }
 )
+export const searchQueryQuestion = createAsyncThunk(
+    'questions/search',
+    async(search,thunkAPI)=>{
+        try {
+            const response = await searchQuestion(search)
+            return response.data
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+        }
+    }
+
+)
 const initialState = {
     questions:[],
     total:null,
@@ -211,6 +253,28 @@ const questionSlice = createSlice({
             state.loading = false
             state.error = action.error.message
         })
+        builder.addCase(editQuiz.pending,(state,action)=>{
+            state.loading = true
+        })
+        builder.addCase(editQuiz.fulfilled,(state,action)=>{
+            state.loading=false
+        })
+        builder.addCase(editQuiz.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        builder.addCase(searchQueryQuestion.pending,(state,action)=>{
+            state.loading = true
+        })
+        builder.addCase(searchQueryQuestion.fulfilled,(state,action)=>{
+            state.questions = action.payload
+            state.loading=false
+        })
+        builder.addCase(searchQueryQuestion.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        
     
     }
 });

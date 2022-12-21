@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
-import { InsertQuestion, GetQuestions, GetSingleQuestions, GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers ,GetQuestionsByDate, GetTotalQuestionindb } from '../models/question.model.js';
+import { InsertQuestion, GetQuestions, GetSingleQuestions, EditQuestion,GetAllQuestionForSingleUser, DeleteQuestion, GetQuestionWithMostAnswers ,GetQuestionsByDate, GetTotalQuestionindb } from '../models/question.model.js';
 import axios from 'axios';  
 
 dotenv.config()
@@ -22,6 +22,23 @@ export const AddQuestion = async (req, res) => {
 
     } catch (error) {
         return res.status(403).json({ message: error.message });
+    }
+}
+export const EditUserQuestion = async(req,res)=>{
+    try {
+
+        const question = {};
+        question.id = req.body.id
+        question.user_id = req.user;
+        question.question = req.body.question;
+        console.log(question);
+        const response = await EditQuestion(question)
+
+        if (response) return res.status(200).json({ message: 'Question edited' })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: error.message });
+
     }
 }
 export const GetAllQuestion = async (req, res) => {

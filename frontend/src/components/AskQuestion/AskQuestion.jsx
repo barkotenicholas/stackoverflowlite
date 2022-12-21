@@ -2,8 +2,18 @@ import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import styles from "./ask.module.css";
 
-const AskQuestion = ({ setIsOpen, handleSubmit }) => {
-  const [question, setQuestion] = useState("");
+const AskQuestion = ({ setIsOpen, handleSubmit ,edit }) => {
+
+  const initialValue={question:""}
+  if (edit !== undefined) {
+
+    initialValue.question = edit.question;
+    initialValue.id=edit.id;
+
+  }else{
+    initialValue.question = ""
+  }
+  const [question, setQuestion] = useState(initialValue);
 
   const isDisabled = question.length === 0;
 
@@ -13,6 +23,11 @@ const AskQuestion = ({ setIsOpen, handleSubmit }) => {
     setQuestion("");
     setIsOpen(false);
   };
+
+  const updateData = e =>{
+    setQuestion({...question ,question:e.target.value})
+    
+  }
   return (
     <>
       <div className={styles.darkBG} onClick={() => setIsOpen(false)} />
@@ -31,8 +46,8 @@ const AskQuestion = ({ setIsOpen, handleSubmit }) => {
               <textarea
                 className={styles.textbox}
                 rows="5"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
+                value={question.question}
+                onChange={(e) => updateData(e)}
                 cols="60"
                 name="description"
                 placeholder="Ask a question?"

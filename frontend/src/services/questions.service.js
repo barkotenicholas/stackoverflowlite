@@ -13,6 +13,11 @@ export const GetQuestion = async (id) => {
      let respone = await axios.get(`${API_URL}/${id}`,{ headers: authHeader() });
     return respone
 }
+export const EditQuestion = async(info)=>{
+
+    return axios.put(API_URL, info,{ headers: authHeader() })
+
+}
 export const AskQuestion = async (question) => {
     return axios.post(API_URL, question,{ headers: authHeader() })
 }

@@ -10,6 +10,7 @@
     align-items: center;
     height: auto;
     justify-content: space-between;
+    border: 1px solid black;
 }
 .deleteicon{
     color: red;

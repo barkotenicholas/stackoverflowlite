@@ -10,13 +10,13 @@ import {
   getQuestionsWithDate,
   getMostAnsweredQuestion,
   getTotalQuestion,
+  searchQueryQuestion,
 } from "../../redux/slices/question.slice";
 import { useNavigate } from "react-router-dom";
 import { getDate } from "./HomeHelper";
 import { clearMessage } from "../../redux/slices/message.slice";
 import ClipLoader from "react-spinners/ClipLoader";
 import { IoFilterSharp } from "react-icons/io5";
-import "rsuite/dist/rsuite.min.css";
 
 const override = {
   display: "flex",
@@ -113,12 +113,20 @@ export const Home = () => {
     }
   };
 
-  console.log(questionsAsked);
+
 
   const handleQuery = () => {
-    setSearchParams({ question: search });
-  };
 
+    setSearchParams({ question: search });
+
+    if(search!==null){
+      dispatch(searchQueryQuestion(search))
+    }
+  };
+  const handleSearch = e =>{
+    setSearchParams({ question: e.target.value });
+    setSearch(e.target.value)
+  }
   return (
     <>
       <div>
@@ -134,7 +142,7 @@ export const Home = () => {
               name=""
               className={styles.searchInput}
               value={searchParams.get("question")}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => handleSearch(e)}
             />
           </div>
 

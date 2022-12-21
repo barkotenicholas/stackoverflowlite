@@ -10,6 +10,15 @@ export const InsertQuestion = async (question) => {
     .execute('spInsertQuestion')
   return result.rowsAffected
 }
+export const EditQuestion = async(question)=>{
+  const pool = await poolPromise
+  const result = await pool.request()
+    .input('id', question.id)
+    .input('user_id', question.user_id)
+    .input('question', question.question)
+    .execute('spEditQuestion')
+  return result.rowsAffected
+}
 export const GetQuestions = async (info) => {
   const pool = await poolPromise;
   const result = await pool.request().input("pagenumber",info.pageno).input("pagesize",info.pagesize).execute("spSelectQuestion");
